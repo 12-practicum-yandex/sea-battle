@@ -1,0 +1,34 @@
+{
+  "name": "sea-battle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint src/",
+    "lint-fix": "eslint src/ --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/12-practicum-yandex/sea-battle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/12-practicum-yandex/sea-battle/issues"
+  },
+  "homepage": "https://github.com/12-practicum-yandex/sea-battle#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "npm-run-all": "^4.1.5",
+    "prettier": "2.6.1",
+    "typescript": "^4.6.3"
+  }
+}
