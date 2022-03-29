@@ -1,7 +1,10 @@
-import './App.css';
+import { CssBaseline, Typography } from '@mui/material';
 
 export const App = () => (
-  <div>
-    <h1>Test</h1>
-  </div>
+  <>
+    <CssBaseline />
+    <div>
+      <Typography variant="h1">Test</Typography>
+    </div>
+  </>
 );
