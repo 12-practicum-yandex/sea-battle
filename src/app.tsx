@@ -1,10 +1,9 @@
-import { CssBaseline, Typography } from '@mui/material';
+import React from 'react';
+import { ErrorBoundary } from './components/error-boundary';
+import { Router } from './router';
 
 export const App = () => (
-  <>
-    <CssBaseline />
-    <div>
-      <Typography variant="h1">Test</Typography>
-    </div>
-  </>
+  <ErrorBoundary>
+    <Router />
+  </ErrorBoundary>
 );
