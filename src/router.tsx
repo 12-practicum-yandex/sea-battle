@@ -1,14 +1,14 @@
-import React from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
 import { SignIn } from './pages/sign-in';
+import { SignUpPage } from './pages';
 
 export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
-        <Route path={ROUTES.SIGN_UP} element={<>SignUp</>} />
+        <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
         <Route path={ROUTES.NOT_FOUND} element={<>404</>} />
         <Route path={ROUTES.SERVER_ERROR} element={<>500</>} />
         <Route path={ROUTES.GAME} element={<>Game</>} />
