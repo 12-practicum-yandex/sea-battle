@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, RefCallback } from 'react';
 import { IMaskInput } from 'react-imask';
 
 interface CustomProps {
@@ -14,12 +14,11 @@ export const TextMaskCustom = forwardRef<HTMLElement, CustomProps>(function Text
   return (
     <IMaskInput
       {...other}
-      mask="$ (###) ### ## ##"
+      mask="# (###) ### ## ##"
       definitions={{
-        $: /[7,8]/,
         '#': /[0-9]/,
       }}
-      ref={ref}
+      inputRef={ref as RefCallback<HTMLTextAreaElement | HTMLInputElement>}
       onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
       overwrite
       unmask
