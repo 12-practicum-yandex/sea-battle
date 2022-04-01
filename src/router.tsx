@@ -2,6 +2,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
 import { SignIn } from './pages/sign-in';
 import { SignUpPage } from './pages';
+import { Leaderboard } from './pages/leaderboard';
 
 export const Router = () => {
   return (
@@ -13,7 +14,7 @@ export const Router = () => {
         <Route path={ROUTES.SERVER_ERROR} element={<>500</>} />
         <Route path={ROUTES.GAME} element={<>Game</>} />
         <Route path={ROUTES.PROFILE} element={<>Profile</>} />
-        <Route path={ROUTES.LEADERBOARD} element={<>LEADERBOARD</>} />
+        <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
         <Route path={ROUTES.FORUM} element={<>FORUM</>} />
         <Route
           path={'/'}
