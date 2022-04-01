@@ -50,7 +50,7 @@ export const SignUpForm = ({ onSubmit }: Props) => {
   } = useForm({ defaultValues, resolver: yupResolver(schema), mode: 'all' });
 
   return (
-    <form action="">
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Card>
         <Content>
           <TextField
@@ -109,7 +109,7 @@ export const SignUpForm = ({ onSubmit }: Props) => {
             Есть аккаунт
           </Link>
 
-          <Button onClick={handleSubmit(onSubmit)} variant="contained">
+          <Button variant="contained" type="submit">
             Зарегистрироваться
           </Button>
         </Content>
