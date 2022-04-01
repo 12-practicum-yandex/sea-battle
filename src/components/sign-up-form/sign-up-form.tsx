@@ -2,7 +2,15 @@ import { useForm, Controller } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { TextField, Link, styled, Card, CardContent, Button } from '@mui/material';
+import {
+  TextField,
+  Link,
+  styled,
+  Card,
+  CardContent,
+  Button,
+  CircularProgress,
+} from '@mui/material';
 
 import { ROUTES } from 'constants/routes';
 import { regexp } from 'constants/regexp';
@@ -38,10 +46,11 @@ const defaultValues: TSignUpFormValues = {
 };
 
 type Props = {
+  isLoading: boolean;
   onSubmit: (values: TSignUpFormValues) => Promise<void>;
 };
 
-export const SignUpForm = ({ onSubmit }: Props) => {
+export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
   const {
     control,
     register,
@@ -109,8 +118,8 @@ export const SignUpForm = ({ onSubmit }: Props) => {
             Есть аккаунт
           </Link>
 
-          <Button variant="contained" type="submit">
-            Зарегистрироваться
+          <Button variant="outlined" type="submit" fullWidth disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} /> : 'Зарегистрироваться'}
           </Button>
         </Content>
       </Card>

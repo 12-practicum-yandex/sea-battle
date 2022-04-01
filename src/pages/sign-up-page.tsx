@@ -10,7 +10,7 @@ export const SignUpPage = () => {
 
   return (
     <PageLayout isCenter>
-      <SignUpForm onSubmit={onSubmit} />
+      <SignUpForm onSubmit={onSubmit} isLoading={false} />
     </PageLayout>
   );
 };
