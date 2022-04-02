@@ -1,15 +1,16 @@
-import React from 'react';
-import { drawCell, redrawCell } from '../../components/game-cell';
-import { SIZE_BOARD } from '../../constants/game';
+import { useEffect, useRef, useCallback } from 'react';
+import { drawCell, redrawCell } from '../canvas/game-cell';
+import { SIZE_BOARD } from 'constants/game';
 import { callbackCellSelect } from '../../pages/game';
+import { CellType } from '../canvas/game-cell/types';
 
 interface IGameSea {
   board: number[][];
   callbackCellSelect: callbackCellSelect;
 }
 
-export const GameSea: React.FC<IGameSea> = ({ board, callbackCellSelect }) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+export const GameSea = ({ board, callbackCellSelect }: IGameSea) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Заполняем поле значениями элементами и сразу отрисовываем ячейки
   const drawBoard = (canvas: HTMLCanvasElement) => {
@@ -22,13 +23,13 @@ export const GameSea: React.FC<IGameSea> = ({ board, callbackCellSelect }) => {
           const x = cell * size;
           const y = row * size;
 
-          drawCell({ ctx, params: { x, y, size, type: 0 } });
+          drawCell({ ctx, params: { x, y, size, type: CellType.empty } });
         }
       }
     }
   };
 
-  const clickInsideCell = React.useCallback(({ e, canvas }) => {
+  const clickInsideCell = useCallback(({ e, canvas }) => {
     const ctx = canvas.getContext('2d');
     const size = SIZE_BOARD / board[0].length;
 
@@ -44,10 +45,10 @@ export const GameSea: React.FC<IGameSea> = ({ board, callbackCellSelect }) => {
     const indexY = startCellY / size;
 
     callbackCellSelect({ indexX, indexY });
-    redrawCell({ ctx, params: { x: startCellX, y: startCellY, size, type: 2 } });
+    redrawCell({ ctx, params: { x: startCellX, y: startCellY, size, type: CellType.hit } });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const canvas = canvasRef.current;
 
     if (canvas !== null) {
@@ -60,7 +61,9 @@ export const GameSea: React.FC<IGameSea> = ({ board, callbackCellSelect }) => {
     }
 
     return () => {
-      if (canvas !== null) canvas.removeEventListener('click', clickInsideCell);
+      if (canvas !== null) {
+        canvas.removeEventListener('click', clickInsideCell);
+      }
     };
   }, []);
 

@@ -4,7 +4,9 @@ import { CellProps } from './types';
 
 export const drawCell = ({ ctx, params }: CellProps) => {
   const cell = new Cell({ ...params });
-  if (ctx !== null) cell.drawType(ctx);
+  if (ctx !== null) {
+    cell.drawType(ctx);
+  }
 };
 
 export const redrawCell = ({ ctx, params }: CellProps) => {

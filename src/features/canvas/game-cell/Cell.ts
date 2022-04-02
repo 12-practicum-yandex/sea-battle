@@ -1,4 +1,5 @@
-import { paramsCellProps } from './types';
+import { CellType, paramsCellProps } from './types';
+import { DEFAULT_SIZE_CELL } from 'constants/game';
 
 export class Cell {
   x: paramsCellProps['x'];
@@ -6,33 +7,33 @@ export class Cell {
   size: paramsCellProps['size'];
   type: paramsCellProps['type'];
 
-  constructor({ x, y, size = 50, type }: paramsCellProps) {
+  constructor({ x, y, size = DEFAULT_SIZE_CELL, type }: paramsCellProps) {
     this.x = x;
     this.y = y;
-    this.size = size || 50;
+    this.size = size;
     this.type = type;
   }
 
   public clear(ctx: CanvasRenderingContext2D) {
-    const { x, y, size = 50 } = this;
+    const { x, y, size } = this;
     ctx.clearRect(x, y, size, size);
   }
 
   public drawType(ctx: CanvasRenderingContext2D) {
     switch (this.type) {
-      case 0: {
+      case CellType.empty: {
         this._draw(ctx);
         break;
       }
-      case 1: {
+      case CellType.miss: {
         this._drawMissing(ctx);
         break;
       }
-      case 2: {
+      case CellType.hit: {
         this._drawHit(ctx);
         break;
       }
-      case 3: {
+      case CellType.ship: {
         this._drawShip(ctx);
         break;
       }
@@ -54,8 +55,7 @@ export class Cell {
     const { x, y, size } = this;
 
     ctx.beginPath();
-    ctx.rect(x, y, size, size);
-    ctx.fill();
+    ctx.fillRect(x, y, size, size);
     ctx.closePath();
   }
 
