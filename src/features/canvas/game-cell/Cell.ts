@@ -14,11 +14,13 @@ export class Cell {
     this.type = type;
   }
 
+  // Получаем координаты начала и размер для конкретной ячейки и очищаем это ячейку
   public clear(ctx: CanvasRenderingContext2D) {
     const { x, y, size } = this;
     ctx.clearRect(x, y, size, size);
   }
 
+  // Отрисовка типа клетки (пустая, с кораблем и т.д.)
   public drawType(ctx: CanvasRenderingContext2D) {
     switch (this.type) {
       case CellType.empty: {
@@ -40,6 +42,7 @@ export class Cell {
     }
   }
 
+  // Отрисовка клетки, если враг попал
   private _drawHit(ctx: CanvasRenderingContext2D) {
     const { x, y, size } = this;
 
@@ -51,6 +54,7 @@ export class Cell {
     this._draw(ctx);
   }
 
+  // Отрисовка клетки c кораблем
   private _drawShip(ctx: CanvasRenderingContext2D) {
     const { x, y, size } = this;
 
@@ -59,6 +63,7 @@ export class Cell {
     ctx.closePath();
   }
 
+  // Отрисовка клетки, если враг не попал
   private _drawMissing(ctx: CanvasRenderingContext2D) {
     const { x, y, size } = this;
 
@@ -69,6 +74,7 @@ export class Cell {
     this._draw(ctx);
   }
 
+  // Отрисовка обычной клетки
   private _draw(ctx: CanvasRenderingContext2D) {
     const { x, y, size } = this;
     const WIDTH_LINE = size / 4;
