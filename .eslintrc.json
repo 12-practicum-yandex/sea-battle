@@ -4,6 +4,14 @@
     "es2021": true,
     "node": true
   },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -18,9 +26,11 @@
     "ecmaVersion": 13,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["import", "react", "@typescript-eslint"],
   "rules": {
+    "import/no-unresolved": "error",
     "react/react-in-jsx-scope": 0,
-    "@typescript-eslint/no-var-requires": 0
+    "@typescript-eslint/no-var-requires": 0,
+    "react/display-name": 0
   }
 }
