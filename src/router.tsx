@@ -1,7 +1,6 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
-import { SignIn } from './pages/sign-in';
-import { SignUpPage } from './pages';
+import { SignUpPage, SignIn, InitGame } from './pages';
 
 export const Router = () => {
   return (
@@ -11,6 +10,7 @@ export const Router = () => {
         <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
         <Route path={ROUTES.NOT_FOUND} element={<>404</>} />
         <Route path={ROUTES.SERVER_ERROR} element={<>500</>} />
+        <Route path={ROUTES.INIT_GAME} element={<InitGame />} />
         <Route path={ROUTES.GAME} element={<>Game</>} />
         <Route path={ROUTES.PROFILE} element={<>Profile</>} />
         <Route path={ROUTES.LEADERBOARD} element={<>LEADERBOARD</>} />
@@ -26,6 +26,8 @@ export const Router = () => {
               <Link to={ROUTES.NOT_FOUND}>Not found</Link>
               <br />
               <Link to={ROUTES.SERVER_ERROR}>Server Error</Link>
+              <br />
+              <Link to={ROUTES.INIT_GAME}>Init game</Link>
               <br />
               <Link to={ROUTES.GAME}>Game</Link>
               <br />
