@@ -68,6 +68,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
             {...register('first-name')}
             helperText={errors['first-name']?.message}
             error={Boolean(errors['first-name'])}
+            disabled={isLoading}
           />
           <TextField
             fullWidth
@@ -75,6 +76,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
             {...register('second-name')}
             helperText={errors['second-name']?.message}
             error={Boolean(errors['second-name'])}
+            disabled={isLoading}
           />
           <TextField
             fullWidth
@@ -82,6 +84,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
             {...register('email')}
             helperText={errors['email']?.message}
             error={Boolean(errors['email'])}
+            disabled={isLoading}
           />
           <TextField
             fullWidth
@@ -89,6 +92,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
             {...register('login')}
             helperText={errors['login']?.message}
             error={Boolean(errors['login'])}
+            disabled={isLoading}
           />
           <TextField
             fullWidth
@@ -96,6 +100,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
             {...register('password')}
             helperText={errors['password']?.message}
             error={Boolean(errors['password'])}
+            disabled={isLoading}
           />
           <Controller
             control={control}
@@ -107,6 +112,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
                 label="Телефон"
                 helperText={errors['phone']?.message}
                 error={Boolean(errors['phone'])}
+                disabled={isLoading}
                 InputProps={{
                   inputComponent: TextMaskCustom as any,
                 }}
