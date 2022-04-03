@@ -10,7 +10,7 @@ interface IProps {
 
 const Card = styled('div')`
   margin-top: 30px;
-  padding: 10px 24px;
+  padding: ${({ theme }) => `${theme.spacing(1)} ${theme.spacing(3)}`};
   border: 1px solid #edf2f9;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;

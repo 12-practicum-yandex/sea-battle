@@ -60,20 +60,31 @@ const LogoutLink = styled(Link)`
   text-align: right;
 `;
 
+const menu = [
+  {
+    label: 'Игра',
+    link: ROUTES.GAME,
+  },
+  {
+    label: 'Таблица лидеров',
+    link: ROUTES.LEADERBOARD,
+  },
+  {
+    label: 'Форум',
+    link: ROUTES.FORUM,
+  },
+];
+
 export const Header = () => {
   return (
     <HeaderWrapper>
       <Title>Атлантида</Title>
       <Navigation>
-        <MenuItem style={({ isActive }) => (isActive ? activeStyle : null)} to={ROUTES.GAME}>
-          Игра
-        </MenuItem>
-        <MenuItem style={({ isActive }) => (isActive ? activeStyle : null)} to={ROUTES.LEADERBOARD}>
-          Таблица лидеров
-        </MenuItem>
-        <MenuItem style={({ isActive }) => (isActive ? activeStyle : null)} to={ROUTES.FORUM}>
-          Форум
-        </MenuItem>
+        {menu.map(({ label, link }) => (
+          <MenuItem style={({ isActive }) => (isActive ? activeStyle : null)} to={link} key={label}>
+            {label}
+          </MenuItem>
+        ))}
       </Navigation>
       <Profile>
         <ProfileLeft>
