@@ -1,7 +1,6 @@
 import { styled, Avatar } from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
 import { ROUTES } from 'constants/routes';
-import CSSProperties from '@mui/styled-engine-sc';
 
 const HeaderWrapper = styled('div')`
   display: flex;
@@ -24,17 +23,16 @@ const Navigation = styled('nav')`
   flex-grow: 1;
 `;
 
-const MenuItem = styled(NavLink)`
+const MenuItem = styled(NavLink)<{ isActive?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
   color: #1e4676;
+  &.active {
+    text-decoration: underline;
+  }
 `;
-
-const activeStyle: CSSProperties = {
-  textDecoration: 'underline',
-};
 
 const Profile = styled('div')`
   padding: 0 20px;
@@ -81,7 +79,7 @@ export const Header = () => {
       <Title>Атлантида</Title>
       <Navigation>
         {menu.map(({ label, link }) => (
-          <MenuItem style={({ isActive }) => (isActive ? activeStyle : null)} to={link} key={label}>
+          <MenuItem to={link} key={label}>
             {label}
           </MenuItem>
         ))}
