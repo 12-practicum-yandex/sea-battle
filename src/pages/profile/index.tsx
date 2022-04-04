@@ -4,15 +4,14 @@ import { SignUpForm } from 'components';
 import { useCallback } from 'react';
 
 const ContentWrapper = styled('div')`
-  width: 100%;
   display: flex;
   align-items: stretch;
-  justify-content: space-between;
+  justify-content: center;
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const Card = styled(CardBase)`
-  flex-grow: 1;
+  width: 400px;
   display: flex;
   justify-content: center;
   padding: ${({ theme }) => theme.spacing(2)};
