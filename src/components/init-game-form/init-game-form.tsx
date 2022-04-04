@@ -34,10 +34,12 @@ export const InitGameForm = ({ onSubmit }: Props) => {
     defaultValues,
   });
 
-  const gameVariant = watch('game-variant');
-  const shipsDrawVariant = watch('ships-draw-variant');
-  const firstPlayer = watch('first-player');
-  const secondPlayer = watch('second-player');
+  const [gameVariant, shipsDrawVariant, firstPlayer, secondPlayer] = watch([
+    'game-variant',
+    'ships-draw-variant',
+    'first-player',
+    'second-player',
+  ]);
 
   const isSubmitDisabled = gameVariant === 'player' && (!firstPlayer || !secondPlayer);
 
