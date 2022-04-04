@@ -52,7 +52,7 @@ type Props = {
   isVisibleLoginLink?: boolean;
 };
 
-export const SignUpForm = ({
+export const ProfileForm = ({
   onSubmit,
   isLoading,
   submitButtonText,

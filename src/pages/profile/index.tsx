@@ -1,6 +1,6 @@
 import { styled, Card as CardBase, Avatar, Input as InputBase } from '@mui/material';
 import { AuthPageLayout } from 'layouts';
-import { SignUpForm } from 'components';
+import { ProfileForm } from 'components';
 import { useCallback } from 'react';
 
 const ContentWrapper = styled('div')`
@@ -32,9 +32,9 @@ export const ProfilePage = () => {
     return Promise.resolve();
   }, []);
 
-  const onChangeAvatar = useCallback((e) => {
+  const onChangeAvatar = (e: any) => {
     console.log(e.target.files);
-  }, []);
+  };
 
   return (
     <AuthPageLayout>
@@ -47,7 +47,7 @@ export const ProfilePage = () => {
             <Input onChange={onChangeAvatar} id={'avatar'} type={'file'} />
           </Label>
         </Card>
-        <SignUpForm
+        <ProfileForm
           onSubmit={onSubmit}
           isLoading={false}
           submitButtonText={'Изменить данные'}
