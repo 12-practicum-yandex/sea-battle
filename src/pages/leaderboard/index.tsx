@@ -10,17 +10,28 @@ const PageWrapper = styled('div')`
   height: 100%;
 `;
 
+const list = [
+  {
+    place: 1,
+    imgUrl: '',
+    winCounter: 12,
+    userName: 'Сафохин Артем Анатольевич',
+  },
+  {
+    place: 2,
+    imgUrl: '',
+    winCounter: 10,
+    userName: 'Сафохин Артем',
+  },
+];
+
 export const Leaderboard = () => {
   return (
     <AuthPageLayout>
       <PageWrapper>
-        <LeaderboardCard
-          place={1}
-          imgUrl={''}
-          winCounter={12}
-          userName={'Сафохин Артем Анатольевич'}
-        />
-        <LeaderboardCard place={2} imgUrl={''} winCounter={10} userName={'Сафохин Артем '} />
+        {list.map((item) => (
+          <LeaderboardCard {...item} key={item.place} />
+        ))}
       </PageWrapper>
     </AuthPageLayout>
   );
