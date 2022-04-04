@@ -1,16 +1,11 @@
-export enum InitGameNames {
-  GameVariant = 'game-variant',
-  ShipsDrawVariant = 'ships-draw-variant',
-  FirstPlayer = 'first-player',
-  SecondPlayer = 'second-player',
-}
-
 type TGameVariant = 'player' | 'computer';
-type TGameDrawVariant = 'random' | 'manual';
+type TShipsDrawVariant = 'random' | 'manual';
 
 export type TInitGameFormValues = {
-  [InitGameNames.FirstPlayer]: string;
-  [InitGameNames.SecondPlayer]: string;
-  [InitGameNames.GameVariant]: TGameVariant;
-  [InitGameNames.ShipsDrawVariant]: TGameDrawVariant;
+  'first-player': string;
+  'second-player': string;
+  'game-variant': TGameVariant;
+  'ships-draw-variant': TShipsDrawVariant;
 };
+
+export type TInitGameNames = keyof TInitGameFormValues;
