@@ -48,9 +48,16 @@ const defaultValues: TSignUpFormValues = {
 type Props = {
   isLoading: boolean;
   onSubmit: (values: TSignUpFormValues) => Promise<void>;
+  submitButtonText?: string;
+  isVisibleLoginLink?: boolean;
 };
 
-export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
+export const SignUpForm = ({
+  onSubmit,
+  isLoading,
+  submitButtonText,
+  isVisibleLoginLink = true,
+}: Props) => {
   const {
     control,
     register,
@@ -120,12 +127,14 @@ export const SignUpForm = ({ onSubmit, isLoading }: Props) => {
             )}
           />
 
-          <Link to={ROUTES.SIGN_IN} component={NavLink}>
-            Есть аккаунт
-          </Link>
+          {isVisibleLoginLink && (
+            <Link to={ROUTES.SIGN_IN} component={NavLink}>
+              Есть аккаунт
+            </Link>
+          )}
 
           <Button variant="outlined" type="submit" fullWidth disabled={isLoading}>
-            {isLoading ? <CircularProgress size={24} /> : 'Зарегистрироваться'}
+            {isLoading ? <CircularProgress size={24} /> : submitButtonText || 'Зарегистрироваться'}
           </Button>
         </Content>
       </Card>
