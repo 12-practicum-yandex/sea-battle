@@ -1,16 +1,14 @@
 import { PageLayout } from 'layouts';
-import { ProfileForm } from 'components';
+import { InitGameForm } from 'components';
 
-export const SignUpPage = () => {
+export const InitGame = () => {
   const onSubmit = (values: any) => {
     console.log(values);
-
-    return Promise.resolve();
   };
 
   return (
     <PageLayout isCenter>
-      <ProfileForm onSubmit={onSubmit} isLoading={false} />
+      <InitGameForm onSubmit={onSubmit} />
     </PageLayout>
   );
 };
