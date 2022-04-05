@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
     "paths": {
-      "components/*": ["src/components/*"],
-      "constants": ["src/constants/*"],
-      "pages/*": ["src/pages/*"],
-      "layouts/*": ["src/layouts/*"],
-      "features/*": ["src/features/*"]
+      "@features": ["features"],
+      "@features/*": ["features/*"],
+      "@pages": ["pages"],
+      "@pages/*": ["pages/*"],
+      "@components": ["components"],
+      "@components/*": ["components/*"],
+      "@constants": ["constants"],
+      "@constants/*": ["constants/*"],
+      "@layouts": ["layouts"],
+      "@layouts/*": ["layouts/*"]
     }
   }
 }

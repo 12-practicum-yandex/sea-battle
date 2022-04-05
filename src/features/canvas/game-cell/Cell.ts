@@ -1,5 +1,5 @@
 import { CellType, paramsCellProps } from './types';
-import { DEFAULT_SIZE_CELL } from 'constants/game';
+import { DEFAULT_SIZE_CELL } from '@constants/game';
 
 export class Cell {
   x: paramsCellProps['x'];
