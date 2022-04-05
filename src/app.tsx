@@ -1,6 +1,9 @@
+import { Provider } from 'react-redux';
+import GlobalStyles from '@mui/material/GlobalStyles';
+
 import { ErrorBoundary } from './components/error-boundary';
 import { Router } from './router';
-import GlobalStyles from '@mui/material/GlobalStyles';
+import { store } from './store';
 
 const inputGlobalStyles = (
   <GlobalStyles
@@ -18,6 +21,8 @@ const inputGlobalStyles = (
 export const App = () => (
   <ErrorBoundary>
     {inputGlobalStyles}
-    <Router />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   </ErrorBoundary>
 );
