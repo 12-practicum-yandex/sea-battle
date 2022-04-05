@@ -1,5 +1,5 @@
 import { PageLayout } from 'layouts';
-import { SignUpForm } from 'components';
+import { ProfileForm } from 'components';
 
 export const SignUpPage = () => {
   const onSubmit = (values: any) => {
@@ -10,7 +10,7 @@ export const SignUpPage = () => {
 
   return (
     <PageLayout isCenter>
-      <SignUpForm onSubmit={onSubmit} isLoading={false} />
+      <ProfileForm onSubmit={onSubmit} isLoading={false} />
     </PageLayout>
   );
 };

@@ -89,7 +89,7 @@ export const Header = () => {
           <ProfileName>No Name</ProfileName>
           <LogoutLink to={'/'}>Выход</LogoutLink>
         </ProfileLeft>
-        <Avatar>NO</Avatar>
+        <Avatar variant="rounded">NO</Avatar>
       </Profile>
     </HeaderWrapper>
   );

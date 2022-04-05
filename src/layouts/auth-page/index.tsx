@@ -9,6 +9,11 @@ const Wrapper = styled(Box)`
   border-radius: 10px;
 `;
 
+const ContentWrapper = styled('div')`
+  padding: 30px 100px;
+  height: 100%;
+`;
+
 type Props = {
   children: ReactNode;
 };
@@ -17,7 +22,7 @@ export const AuthPageLayout = ({ children }: Props) => {
   return (
     <Wrapper>
       <Header />
-      {children}
+      <ContentWrapper>{children}</ContentWrapper>
     </Wrapper>
   );
 };

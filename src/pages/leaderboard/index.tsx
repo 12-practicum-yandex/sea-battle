@@ -6,8 +6,6 @@ const PageWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 30px 100px;
-  height: 100%;
 `;
 
 const list = [
