@@ -1,6 +1,7 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
 import { SignUpPage, SignIn, InitGame, Leaderboard, ProfilePage } from './pages';
+import { ForumPage } from './pages/forum/undex';
 
 export const Router = () => {
   return (
@@ -14,7 +15,7 @@ export const Router = () => {
         <Route path={ROUTES.GAME} element={<>Game</>} />
         <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
         <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
-        <Route path={ROUTES.FORUM} element={<>FORUM</>} />
+        <Route path={ROUTES.FORUM} element={<ForumPage />} />
         <Route
           path={'/'}
           element={
