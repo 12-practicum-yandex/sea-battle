@@ -20,26 +20,24 @@ export const ForumPage = () => {
       <PageWrapper>
         <Top>
           <Typography variant={'h4'}>Категории</Typography>
-          <Button variant={'outlined'}>
+          <Button variant="outlined">
             <AddIcon />
             Добавить
           </Button>
         </Top>
         <ForumCategoryCard
-          title={'Новые игры'}
-          textPreview={'Lorem ipsum dolor sit amыet, consectetur adipisicing elit.'}
+          title="Новые игры"
+          textPreview="Lorem ipsum dolor sit amыet, consectetur adipisicing elit."
           themCounter={153}
           answerCounter={123}
-          lastTheme={'Название темы'}
+          lastTheme="Название темы"
         />
         <ForumCategoryCard
-          title={'Новинки консолей'}
-          textPreview={
-            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto autem ducimus libero natus nesciunt quis suscipit! Iure minus sunt ut!'
-          }
+          title="Новинки консолей"
+          textPreview="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto autem ducimus libero natus nesciunt quis suscipit! Iure minus sunt ut!"
           themCounter={53}
           answerCounter={23}
-          lastTheme={'PSP'}
+          lastTheme="PSP"
         />
       </PageWrapper>
     </AuthPageLayout>

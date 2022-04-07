@@ -1,7 +1,7 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
 import { SignUpPage, SignIn, InitGame, Leaderboard, ProfilePage } from './pages';
-import { ForumPage } from './pages/forum/undex';
+import { ForumPage } from './pages/forum';
 
 export const Router = () => {
   return (
