@@ -1,16 +1,16 @@
-import { CellType, paramsCellProps } from './types';
+import { CellDrawProps, CellType } from './types';
 import { DEFAULT_SIZE_CELL } from '@constants/game';
 
 export class Cell {
-  x: paramsCellProps['x'];
-  y: paramsCellProps['y'];
-  size: paramsCellProps['size'];
-  type: paramsCellProps['type'];
+  x: number;
+  y: number;
+  type: CellDrawProps['params']['type'];
+  size: number;
 
-  constructor({ x, y, size = DEFAULT_SIZE_CELL, type }: paramsCellProps) {
-    this.x = x;
-    this.y = y;
-    this.size = size;
+  constructor({ indexX, indexY, type }: CellDrawProps['params']) {
+    this.x = indexX * DEFAULT_SIZE_CELL;
+    this.y = indexY * DEFAULT_SIZE_CELL;
+    this.size = DEFAULT_SIZE_CELL;
     this.type = type;
   }
 
@@ -45,7 +45,7 @@ export class Cell {
   // Отрисовка клетки, если враг попал
   private _drawHit(ctx: CanvasRenderingContext2D) {
     const { x, y, size } = this;
-
+    this._drawShip(ctx);
     ctx.beginPath();
     ctx.strokeStyle = 'red';
     ctx.arc(x + size / 2, y + size / 2, size / 8, 0, 2 * Math.PI);
@@ -59,6 +59,7 @@ export class Cell {
     const { x, y, size } = this;
 
     ctx.beginPath();
+    ctx.fillStyle = '#1e4676';
     ctx.fillRect(x, y, size, size);
     ctx.closePath();
   }

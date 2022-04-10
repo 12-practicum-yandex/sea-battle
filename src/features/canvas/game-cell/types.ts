@@ -1,3 +1,5 @@
+import { CellProps } from '@features/gameSea/types';
+
 export enum CellType {
   'empty',
   'miss',
@@ -5,14 +7,7 @@ export enum CellType {
   'ship',
 }
 
-export type paramsCellProps = {
-  x: number;
-  y: number;
-  type: CellType;
-  size: number;
-};
-
-export type CellProps = {
+export type CellDrawProps = {
   ctx: CanvasRenderingContext2D;
-  params: paramsCellProps;
+  params: CellProps;
 };
