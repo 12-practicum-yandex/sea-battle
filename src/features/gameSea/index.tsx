@@ -1,5 +1,5 @@
 import { MouseEvent, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material';
 import { redrawCell } from '@features/canvas/game-cell';
 import { ALL_SHIP } from '@constants/game';
 import { Ship } from '@components/ship';
@@ -10,18 +10,18 @@ import { setTypesCells } from '@features/gameSea/setTypesCells';
 import { CellProps, GameSeaProps, ShipProps } from '@features/gameSea/types';
 import { changePositionShip } from '@features/gameSea/changePositionShip';
 
-const CanvasContainer = styled.div`
-  display: flex;
-  width: min-content;
-  padding-right: 20px;
-  max-height: 500px;
-`;
+const CanvasContainer = styled('div')(() => ({
+  display: 'flex',
+  width: 'min-content',
+  'padding-right': 20,
+  'max-height': 500,
+}));
 
-const ShipsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 330px;
-`;
+const ShipsContainer = styled('div')(() => ({
+  display: 'flex',
+  'flex-wrap': 'wrap',
+  width: 330,
+}));
 
 type SetCellHandlerType = ({
   typesCell,

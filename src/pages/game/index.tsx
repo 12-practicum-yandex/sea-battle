@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { GameSea } from '@features/gameSea';
 import { initBoard } from './initBoard';
 import { COUNT_CELL } from '@constants/game';
-import styled from 'styled-components';
+import { styled } from '@mui/material';
 import { CellProps } from '@features/gameSea/types';
 
 export type callbackCellSelect = (payload: CellProps[]) => void;
@@ -12,9 +12,9 @@ export enum TypeGame {
   'battle',
 }
 
-const BoardContainer = styled.div`
-  display: flex;
-`;
+const BoardContainer = styled('div')(() => ({
+  display: 'flex',
+}));
 
 export const Game = () => {
   const [board, setBoard] = useState<number[][] | null>(null);
