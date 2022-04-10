@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { NavLink } from 'react-router-dom';
 
-import { ROUTES } from 'constants/routes';
+import { ROUTES } from '@constants/routes';
 
 import { TSignInFormValues } from './types';
 

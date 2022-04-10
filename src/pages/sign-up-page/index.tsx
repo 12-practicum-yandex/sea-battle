@@ -1,5 +1,5 @@
-import { PageLayout } from 'layouts';
-import { ProfileForm } from 'components';
+import { PageLayout } from '@layouts';
+import { ProfileForm } from '@components';
 
 export const SignUpPage = () => {
   const onSubmit = (values: any) => {

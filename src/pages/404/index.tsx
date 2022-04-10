@@ -1,7 +1,7 @@
 import { Paper, Box, Typography, Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
-import { PageLayout } from 'layouts';
+import { PageLayout } from '@layouts';
 
 export const Page404 = () => (
   <PageLayout isCenter>
