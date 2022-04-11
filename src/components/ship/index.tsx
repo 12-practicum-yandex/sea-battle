@@ -3,22 +3,33 @@ import { PositionShip, ShipProps } from '@features/gameSea/types';
 import { styled } from '@mui/material';
 
 type Props = {
+  dragShip: ShipProps | null;
   data: ShipProps;
   isDragCallback: (ship: ShipProps) => void; // callback, передающая параметры корабля
   changePositionShip: (id: number) => void; // callback, передающая параметры корабля
 };
 
-const ShipComponent = styled('div')(() => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: 10,
-  marginRight: 10,
-  background: '#1e4676',
-  userSelect: 'none',
-}));
+const ShipComponent = styled('div')(
+  ({ drag, ship }: { drag: ShipProps | null; ship: ShipProps }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+    marginRight: 10,
+    userSelect: 'none',
+    background: '#1e4676',
+    width:
+      ship.settings.positionShip === PositionShip.horizontal ? 50 * ship.settings.countDeck : 50,
+    height:
+      ship.settings.positionShip === PositionShip.vertical ? 50 * ship.settings.countDeck : 50,
+    transform:
+      drag !== null && drag.id === ship.id
+        ? `translate(${drag.translate.x}px, ${drag.translate.y}px)`
+        : `translate(${0}px, ${0}px)`,
+  }),
+);
 
-export const Ship = memo(({ data, isDragCallback, changePositionShip }: Props) => {
+export const Ship = memo(({ data, isDragCallback, changePositionShip, dragShip }: Props) => {
   const onMouseDownHandler = useCallback(
     (e) => {
       if (e.nativeEvent.button === 0) {
@@ -33,19 +44,7 @@ export const Ship = memo(({ data, isDragCallback, changePositionShip }: Props) =
   }, [data]);
 
   return (
-    <ShipComponent
-      className="ship"
-      onMouseDown={onMouseDownHandler}
-      sx={{
-        width:
-          data.settings.positionShip === PositionShip.horizontal
-            ? 50 * data.settings.countDeck
-            : 50,
-        height:
-          data.settings.positionShip === PositionShip.vertical ? 50 * data.settings.countDeck : 50,
-        transform: `translate(${data.translate.x}px, ${data.translate.y}px)`,
-      }}
-    >
+    <ShipComponent className="ship" onMouseDown={onMouseDownHandler} drag={dragShip} ship={data}>
       <span onClick={positionShipHandler}>{data.id}</span>
     </ShipComponent>
   );

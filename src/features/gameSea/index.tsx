@@ -4,7 +4,7 @@ import { redrawCell } from '@features/canvas/game-cell';
 import { ALL_SHIP } from '@constants/game';
 import { Ship } from '@components/ship';
 import { getIndexAndPositionCells } from '@features/gameSea/getIndexAndPositionCells';
-import { changeTranslateShip, clearTranslateShip } from '@features/gameSea/translateShip';
+import { successTranslateShip } from '@features/gameSea/translateShip';
 import { drawBoard } from '@features/gameSea/drawBoard';
 import { setTypesCells } from '@features/gameSea/setTypesCells';
 import { CellProps, GameSeaProps, ShipProps } from '@features/gameSea/types';
@@ -13,13 +13,13 @@ import { changePositionShip } from '@features/gameSea/changePositionShip';
 const CanvasContainer = styled('div')(() => ({
   display: 'flex',
   width: 'min-content',
-  'padding-right': 20,
-  'max-height': 500,
+  paddingRight: 20,
+  maxHeight: 500,
 }));
 
 const ShipsContainer = styled('div')(() => ({
   display: 'flex',
-  'flex-wrap': 'wrap',
+  flexWrap: 'wrap',
   width: 330,
 }));
 
@@ -55,14 +55,15 @@ export const GameSea = ({ board, callbackCellSelect }: GameSeaProps) => {
 
   const mouseMoveHandler = (e: MouseEvent<HTMLDivElement>) => {
     if (dragShip !== null) {
-      const allShips = changeTranslateShip({
-        ships,
-        x: e.movementX,
-        y: e.movementY,
-        id: dragShip.id,
-      });
+      const dragShipUpdate = {
+        ...dragShip,
+        translate: {
+          x: dragShip.translate.x + e.movementX,
+          y: dragShip.translate.y + e.movementY,
+        },
+      };
 
-      setShips(allShips);
+      setDragShip(dragShipUpdate);
     }
   };
 
@@ -78,20 +79,18 @@ export const GameSea = ({ board, callbackCellSelect }: GameSeaProps) => {
         setCellHandler({ ctx, typesCell });
 
         if (dragShip !== null) {
-          setShips(clearTranslateShip(ships, dragShip.id));
+          setShips(successTranslateShip(ships, dragShip.id));
           setDragShip(null);
           return;
         }
       }
 
-      setShips(clearTranslateShip(ships));
       setDragShip(null);
     }
   };
 
   // Если перетаскиваем за пределы поля, то возвращаем корабль на прежнее место
   const onMouseLeaveHandler = () => {
-    setShips(clearTranslateShip(ships));
     setDragShip(null);
   };
 
@@ -130,6 +129,7 @@ export const GameSea = ({ board, callbackCellSelect }: GameSeaProps) => {
             data={item}
             isDragCallback={setDragShipHandler}
             changePositionShip={changePositionShipHandler}
+            dragShip={dragShip}
           />
         ))}
       </ShipsContainer>
