@@ -1,6 +1,6 @@
 import { styled, Card as CardBase, Avatar, Input as InputBase } from '@mui/material';
-import { AuthPageLayout } from 'layouts';
-import { ProfileForm } from 'components';
+import { AuthPageLayout } from '@layouts';
+import { ProfileForm } from '@components';
 import { useCallback } from 'react';
 
 const ContentWrapper = styled('div')`

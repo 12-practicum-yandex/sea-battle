@@ -1,6 +1,6 @@
 import { styled, Avatar } from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
-import { ROUTES } from 'constants/routes';
+import { ROUTES } from '@constants/routes';
 
 const HeaderWrapper = styled('div')`
   display: flex;

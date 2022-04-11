@@ -1,8 +1,8 @@
-import { AuthPageLayout } from 'layouts';
+import { AuthPageLayout } from '@layouts';
 import { Typography, Button, styled } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
-import { ForumCategoryCard } from '../../components/forum-category-card';
+import { ForumCategoryCard } from '@components/forum-category-card';
 
 const PageWrapper = styled('div')`
   color: #1e1e1e;

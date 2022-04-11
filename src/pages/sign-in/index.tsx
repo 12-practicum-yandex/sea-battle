@@ -1,5 +1,5 @@
-import { PageLayout } from 'layouts';
-import { SignInForm } from 'components';
+import { PageLayout } from '@layouts';
+import { SignInForm } from '@components';
 
 export const SignIn = () => {
   const onSubmit = (values: any) => {

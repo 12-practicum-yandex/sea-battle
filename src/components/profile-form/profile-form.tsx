@@ -12,8 +12,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 
-import { ROUTES } from 'constants/routes';
-import { regexp } from 'constants/regexp';
+import { ROUTES } from '@constants/routes';
+import { regexp } from '@constants/regexp';
 
 import { TSignUpFormValues } from './types';
 import { TextMaskCustom } from '../text-mask-custom';

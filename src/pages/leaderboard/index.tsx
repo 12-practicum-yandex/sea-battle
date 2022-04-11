@@ -1,5 +1,5 @@
-import { AuthPageLayout } from 'layouts';
-import { LeaderboardCard } from 'components';
+import { AuthPageLayout } from '@layouts';
+import { LeaderboardCard } from '@components';
 import { styled } from '@mui/material';
 
 const PageWrapper = styled('div')`

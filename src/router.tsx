@@ -1,7 +1,16 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import { ROUTES } from './constants/routes';
-import { SignUpPage, SignIn, InitGame, Leaderboard, ProfilePage } from './pages';
-import { ForumPage } from './pages/forum';
+import { ROUTES } from '@constants/routes';
+import {
+  SignUpPage,
+  SignIn,
+  InitGame,
+  Leaderboard,
+  ProfilePage,
+  Page404,
+  Page500,
+  Game,
+  ForumPage,
+} from '@pages';
 
 export const Router = () => {
   return (
@@ -9,10 +18,10 @@ export const Router = () => {
       <Routes>
         <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
         <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
-        <Route path={ROUTES.NOT_FOUND} element={<>404</>} />
-        <Route path={ROUTES.SERVER_ERROR} element={<>500</>} />
+        <Route path={ROUTES.NOT_FOUND} element={<Page404 />} />
+        <Route path={ROUTES.SERVER_ERROR} element={<Page500 />} />
         <Route path={ROUTES.INIT_GAME} element={<InitGame />} />
-        <Route path={ROUTES.GAME} element={<>Game</>} />
+        <Route path={ROUTES.GAME} element={<Game />} />
         <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
         <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
         <Route path={ROUTES.FORUM} element={<ForumPage />} />
