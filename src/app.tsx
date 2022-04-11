@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux';
 import GlobalStyles from '@mui/material/GlobalStyles';
 
-import { ErrorBoundary } from './components/error-boundary';
+import { ErrorBoundary } from '@components/error-boundary';
 import { Router } from './router';
 import { store } from './store';
 

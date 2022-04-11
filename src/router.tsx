@@ -9,6 +9,7 @@ import {
   Page404,
   Page500,
   Game,
+  ForumPage,
 } from '@pages';
 
 export const Router = () => {
@@ -23,7 +24,7 @@ export const Router = () => {
         <Route path={ROUTES.GAME} element={<Game />} />
         <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
         <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
-        <Route path={ROUTES.FORUM} element={<>FORUM</>} />
+        <Route path={ROUTES.FORUM} element={<ForumPage />} />
         <Route
           path={'/'}
           element={
