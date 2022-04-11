@@ -5,7 +5,8 @@
       "constants": ["src/constants/*"],
       "pages/*": ["src/pages/*"],
       "layouts/*": ["src/layouts/*"],
-      "features/*": ["src/features/*"]
+      "features/*": ["src/features/*"],
+      "api/*": ["src/api/*"]
     }
   }
 }
