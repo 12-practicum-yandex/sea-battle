@@ -37,6 +37,7 @@ module.exports = {
       '@layouts': path.resolve(__dirname, 'src/layouts/'),
       '@features': path.resolve(__dirname, 'src/features/'),
       '@constants': path.resolve(__dirname, 'src/constants/'),
+      '@api': path.resolve(__dirname, 'src/api/'),
     },
   },
   plugins: [

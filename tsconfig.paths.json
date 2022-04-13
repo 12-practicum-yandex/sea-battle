@@ -10,7 +10,9 @@
       "@constants": ["constants"],
       "@constants/*": ["constants/*"],
       "@layouts": ["layouts"],
-      "@layouts/*": ["layouts/*"]
+      "@layouts/*": ["layouts/*"],
+      "@api": ["api"],
+      "@api/*": ["api/*"]
     }
   }
 }
