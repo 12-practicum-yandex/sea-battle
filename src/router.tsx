@@ -36,7 +36,6 @@ export const Router = () => {
             </RequireAuth>
           }
         />
-        <Route path={ROUTES.NOT_FOUND} element={<Page404 />} />
         <Route path={ROUTES.SERVER_ERROR} element={<Page500 />} />
         <Route
           path={ROUTES.INIT_GAME}
@@ -86,8 +85,6 @@ export const Router = () => {
               <br />
               <Link to={ROUTES.SIGN_UP}>Sign UP</Link>
               <br />
-              <Link to={ROUTES.NOT_FOUND}>Not found</Link>
-              <br />
               <Link to={ROUTES.SERVER_ERROR}>Server Error</Link>
               <br />
               <Link to={ROUTES.INIT_GAME}>Init game</Link>
@@ -102,6 +99,7 @@ export const Router = () => {
             </div>
           }
         />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );
