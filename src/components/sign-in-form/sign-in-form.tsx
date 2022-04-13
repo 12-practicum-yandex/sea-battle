@@ -37,7 +37,7 @@ const Content = styled(CardContent)`
 
 type Props = {
   isLoading: boolean;
-  onSubmit: (values: TSignInFormValues) => Promise<void>;
+  onSubmit: (values: TSignInFormValues) => Promise<unknown>;
 };
 
 export const SignInForm = ({ isLoading, onSubmit }: Props) => {

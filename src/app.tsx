@@ -2,6 +2,8 @@ import { Provider } from 'react-redux';
 import GlobalStyles from '@mui/material/GlobalStyles';
 
 import { ErrorBoundary } from '@components/error-boundary';
+import { AuthProvider } from '@features/auth';
+
 import { Router } from './router';
 import { store } from './store';
 
@@ -22,7 +24,9 @@ export const App = () => (
   <ErrorBoundary>
     {inputGlobalStyles}
     <Provider store={store}>
-      <Router />
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
     </Provider>
   </ErrorBoundary>
 );

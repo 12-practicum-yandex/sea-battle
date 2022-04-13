@@ -8,4 +8,5 @@ export const ROUTES = {
   PROFILE: '/profile',
   LEADERBOARD: '/leaderboard',
   FORUM: '/forum',
+  CHECK_AUTH: '/check-auth',
 };
