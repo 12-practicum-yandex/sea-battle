@@ -1,0 +1,23 @@
+import { FC, memo } from 'react';
+import { styled, Button as ButtonBase } from '@mui/material';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+
+const Button = styled(ButtonBase)`
+  position: fixed;
+  bottom: ${({ theme }) => theme.spacing(2)};
+  right: ${({ theme }) => theme.spacing(2)};
+`;
+
+interface IProps {
+  onClick: () => void;
+  isOpen: boolean;
+}
+
+export const FullscreenButton: FC<IProps> = memo(({ onClick, isOpen }: IProps) => {
+  return (
+    <Button onClick={onClick} variant={'outlined'}>
+      {isOpen ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
+    </Button>
+  );
+});
