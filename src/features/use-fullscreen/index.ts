@@ -12,7 +12,6 @@ interface IReturn {
 export const useFullscreen = ({ element }: IParams): IReturn => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleFullscreen = useCallback(() => {
-    console.log(isOpen);
     if (element) {
       if (isOpen) {
         document.exitFullscreen();
