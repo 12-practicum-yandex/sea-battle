@@ -13,7 +13,7 @@ import {
   ForumPage,
   CheckAuth,
 } from '@pages';
-import { RequireAuth } from '@features/auth';
+import { RequireAuth, SkipAuth } from '@features/auth';
 
 export const Router = () => {
   return (
@@ -23,17 +23,17 @@ export const Router = () => {
         <Route
           path={ROUTES.SIGN_IN}
           element={
-            <RequireAuth>
+            <SkipAuth>
               <SignIn />
-            </RequireAuth>
+            </SkipAuth>
           }
         />
         <Route
           path={ROUTES.SIGN_UP}
           element={
-            <RequireAuth>
+            <SkipAuth>
               <SignUpPage />
-            </RequireAuth>
+            </SkipAuth>
           }
         />
         <Route path={ROUTES.SERVER_ERROR} element={<Page500 />} />
