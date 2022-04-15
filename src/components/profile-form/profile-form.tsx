@@ -47,7 +47,7 @@ const defaultValues: TSignUpFormValues = {
 
 type Props = {
   isLoading: boolean;
-  onSubmit: (values: TSignUpFormValues) => Promise<void>;
+  onSubmit: (values: TSignUpFormValues) => Promise<unknown>;
   submitButtonText?: string;
   isVisibleLoginLink?: boolean;
 };
