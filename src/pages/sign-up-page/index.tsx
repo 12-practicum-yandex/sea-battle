@@ -1,3 +1,5 @@
+import { useSnackbar } from 'notistack';
+
 import { PageLayout } from '@layouts';
 import { ProfileForm } from '@components';
 import { useSignUpMutation } from '@api/auth';
@@ -6,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 
 export const SignUpPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   const [signUpMutation, { isLoading }] = useSignUpMutation();
@@ -20,7 +23,12 @@ export const SignUpPage = () => {
       second_name: values['second-name'],
     })
       .unwrap()
-      .then(() => navigate(ROUTES.INIT_GAME));
+      .then(() => navigate(ROUTES.INIT_GAME))
+      .catch(() => {
+        enqueueSnackbar('Что-то пошло не так', {
+          variant: 'error',
+        });
+      });
 
   return (
     <PageLayout isCenter>
