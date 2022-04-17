@@ -12,9 +12,9 @@ type setTypesCells = ({
   isShip: boolean;
 }) => CellProps[] | null;
 
-type checkProp = (board: number[][], cells: CellProps[]) => CellType | null;
+type CheckProp = (board: number[][], cells: CellProps[]) => CellType | null;
 
-type checkCellAroundType = ({
+type GetDataCellType = ({
   board,
   x,
   y,
@@ -24,9 +24,13 @@ type checkCellAroundType = ({
   y: number;
 }) => CellProps | null;
 
-type checkCellAround = ({ board, cell }: { board: number[][]; cell: CellProps }) => {
-  [s in string]: CellProps | null;
-};
+type CheckCellAroundType = ({
+  board,
+  cell,
+}: {
+  board: number[][];
+  cell: CellProps;
+}) => Record<string, CellProps>;
 
 export const setTypesHitOrShip: setTypesCells = ({ cells, board, isShip }) => {
   if (cells === null) return null;
@@ -59,12 +63,13 @@ export const drawMissAfterDead = ({
   board: number[][];
   cells: CellProps[];
   ctx: CanvasRenderingContext2D;
-}): void => {
-  for (let i = 0; i < cells.length; i++) {
-    const cell = cells[i];
-    const cellsAround = checkCellAround({ board, cell });
+}): CellProps[] => {
+  let cellsAroundShip: CellProps[] = [];
 
-    const cellsAroundShip = Object.values(cellsAround).filter(
+  for (let i = 0; i < cells.length; i++) {
+    const cellsAround = checkCellAround({ board, cell: cells[i] });
+
+    cellsAroundShip = Object.values(cellsAround).filter(
       (cell) => cell !== null && cell.type === CellType.empty,
     );
 
@@ -75,9 +80,11 @@ export const drawMissAfterDead = ({
       }
     });
   }
+
+  return cellsAroundShip;
 };
 
-const checkCellAround: checkCellAround = ({ board, cell }) => {
+const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
   const x = cell.indexX;
   const y = cell.indexY;
 
@@ -91,10 +98,26 @@ const checkCellAround: checkCellAround = ({ board, cell }) => {
   const bottomLeft = getDataCell({ board, x: x - 1, y: y + 1 });
   const bottomRight = getDataCell({ board, x: x + 1, y: y + 1 });
 
-  return { bottomCell, topCell, rightCell, leftCell, topLeft, topRight, bottomLeft, bottomRight };
+  const allCells = {
+    bottomCell,
+    topCell,
+    rightCell,
+    leftCell,
+    topLeft,
+    topRight,
+    bottomLeft,
+    bottomRight,
+  };
+
+  // Костыль, помогает при типизации
+  return JSON.parse(
+    JSON.stringify(
+      Object.fromEntries(Object.entries(allCells).filter(([_, cell]) => cell !== null)),
+    ),
+  );
 };
 
-const getDataCell: checkCellAroundType = ({ board, x, y }) => {
+const getDataCell: GetDataCellType = ({ board, x, y }) => {
   if (board[y] !== undefined && board[y][x] !== undefined) {
     return { indexX: x, indexY: y, type: board[y][x] };
   } else {
@@ -102,7 +125,7 @@ const getDataCell: checkCellAroundType = ({ board, x, y }) => {
   }
 };
 
-const checkHit: checkProp = (board, cells) => {
+const checkHit: CheckProp = (board, cells) => {
   let type = null;
 
   if (cells.length === 1) {
@@ -120,7 +143,7 @@ const checkHit: checkProp = (board, cells) => {
   return type;
 };
 
-const checkShip: checkProp = (board, cells) => {
+const checkShip: CheckProp = (board, cells) => {
   const type: CellType.ship | null = CellType.ship;
 
   for (let i = 0; i < cells.length; i++) {

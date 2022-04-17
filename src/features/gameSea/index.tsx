@@ -85,8 +85,8 @@ export const GameSea = ({
   const updateCellAfterDead = (deadShip: ShipProps, ctx: CanvasRenderingContext2D) => {
     const cells = deadShip.isPositionCell;
     if (cells !== null) {
-      drawMissAfterDead({ board, cells, ctx });
-      // Обновить доску
+      const cellsAroundShip = drawMissAfterDead({ board, cells, ctx });
+      callbackCellSelect(cellsAroundShip);
     }
   };
 
