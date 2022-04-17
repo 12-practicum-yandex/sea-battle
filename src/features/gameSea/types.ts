@@ -1,4 +1,3 @@
-import { callbackCellSelect } from '@pages/game';
 import { CellType } from '@features/canvas/game-cell/types';
 
 export enum PositionShip {
@@ -16,11 +15,18 @@ export type ShipProps = {
     x: number;
     y: number;
   };
+  hp: number;
+  isPositionCell: null | CellProps[];
 };
+
+export type CallbackCellSelect = (payload: CellProps[]) => void;
+export type CallbackDeadShip = (deadShip: ShipProps) => void;
 
 export type GameSeaProps = {
   board: number[][];
-  callbackCellSelect: callbackCellSelect;
+  callbackCellSelect: CallbackCellSelect;
+  callbackDeadShip: CallbackDeadShip;
+  showShip: boolean;
 };
 
 export type CellProps = {

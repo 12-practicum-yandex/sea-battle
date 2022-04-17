@@ -3,9 +3,7 @@ import { GameSea } from '@features/gameSea';
 import { initBoard } from './initBoard';
 import { COUNT_CELL } from '@constants/game';
 import { styled } from '@mui/material';
-import { CellProps } from '@features/gameSea/types';
-
-export type callbackCellSelect = (payload: CellProps[]) => void;
+import { GameSeaProps } from '@features/gameSea/types';
 
 export enum TypeGame {
   'preparation',
@@ -21,7 +19,7 @@ export const Game = () => {
   const [typeGame, setTypeGame] = useState<TypeGame>(TypeGame.preparation);
 
   // При клике по ячейке или переносе корабля возвращается массив index в матрице и тип ячеек
-  const cellSelect: callbackCellSelect = (payload) => {
+  const cellSelect: GameSeaProps['callbackCellSelect'] = (payload) => {
     if (board !== null) {
       const boardUpdateTypes = JSON.parse(JSON.stringify(board));
 
@@ -33,14 +31,24 @@ export const Game = () => {
     }
   };
 
+  const deadShipHandler: GameSeaProps['callbackDeadShip'] = (ship) => {
+    console.log(ship, 'Поражен');
+  };
+
   useEffect(() => {
     setBoard(initBoard(COUNT_CELL));
   }, []);
 
   return (
     <BoardContainer>
-      {!!board && <GameSea board={board} callbackCellSelect={cellSelect} />}{' '}
-      {!!board && <GameSea board={board} callbackCellSelect={cellSelect} />}
+      {!!board && (
+        <GameSea
+          board={board}
+          callbackCellSelect={cellSelect}
+          callbackDeadShip={deadShipHandler}
+          showShip={true}
+        />
+      )}
     </BoardContainer>
   );
 };
