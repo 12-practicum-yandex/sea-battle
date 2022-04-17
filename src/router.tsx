@@ -1,4 +1,5 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+
 import { ROUTES } from '@constants/routes';
 import {
   SignUpPage,
@@ -10,21 +11,72 @@ import {
   Page500,
   Game,
   ForumPage,
+  CheckAuth,
 } from '@pages';
+import { RequireAuth, SkipAuth } from '@features/auth';
 
 export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
-        <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
-        <Route path={ROUTES.NOT_FOUND} element={<Page404 />} />
+        <Route path={ROUTES.CHECK_AUTH} element={<CheckAuth />} />
+        <Route
+          path={ROUTES.SIGN_IN}
+          element={
+            <SkipAuth>
+              <SignIn />
+            </SkipAuth>
+          }
+        />
+        <Route
+          path={ROUTES.SIGN_UP}
+          element={
+            <SkipAuth>
+              <SignUpPage />
+            </SkipAuth>
+          }
+        />
         <Route path={ROUTES.SERVER_ERROR} element={<Page500 />} />
-        <Route path={ROUTES.INIT_GAME} element={<InitGame />} />
-        <Route path={ROUTES.GAME} element={<Game />} />
-        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
-        <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
-        <Route path={ROUTES.FORUM} element={<ForumPage />} />
+        <Route
+          path={ROUTES.INIT_GAME}
+          element={
+            <RequireAuth>
+              <InitGame />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={ROUTES.GAME}
+          element={
+            <RequireAuth>
+              <Game />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={ROUTES.PROFILE}
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={ROUTES.LEADERBOARD}
+          element={
+            <RequireAuth>
+              <Leaderboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={ROUTES.FORUM}
+          element={
+            <RequireAuth>
+              <ForumPage />
+            </RequireAuth>
+          }
+        />
         <Route
           path={'/'}
           element={
@@ -32,8 +84,6 @@ export const Router = () => {
               <Link to={ROUTES.SIGN_IN}>Sign In</Link>
               <br />
               <Link to={ROUTES.SIGN_UP}>Sign UP</Link>
-              <br />
-              <Link to={ROUTES.NOT_FOUND}>Not found</Link>
               <br />
               <Link to={ROUTES.SERVER_ERROR}>Server Error</Link>
               <br />
@@ -49,6 +99,7 @@ export const Router = () => {
             </div>
           }
         />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );
