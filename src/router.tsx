@@ -48,9 +48,9 @@ export const Router = () => {
         <Route
           path={ROUTES.GAME}
           element={
-            // <RequireAuth>
-            <Game />
-            // </RequireAuth>
+            <RequireAuth>
+              <Game />
+            </RequireAuth>
           }
         />
         <Route

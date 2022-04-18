@@ -1,4 +1,5 @@
 import { CellType } from '@features/canvas/game-cell/types';
+import { TypeGame } from '@pages/game';
 
 export enum PositionShip {
   'vertical',
@@ -27,6 +28,7 @@ export type GameSeaProps = {
   callbackCellSelect: CallbackCellSelect;
   callbackDeadShip: CallbackDeadShip;
   showShip: boolean;
+  readyGame: (isReady: boolean) => void;
 };
 
 export type CellProps = {

@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from '@mui/material';
 import { redrawCell } from '@features/canvas/game-cell';
 import { ALL_SHIP } from '@constants/game';
@@ -40,9 +40,12 @@ export const GameSea = ({
   callbackCellSelect,
   callbackDeadShip,
   showShip,
+  readyGame,
 }: GameSeaProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+
+  const [isReady, setIsReady] = useState(false);
   const [dragShip, setDragShip] = useState<ShipProps | null>(null);
   const [ships, setShips] = useState<ShipProps[] | []>([]);
 
@@ -146,6 +149,20 @@ export const GameSea = ({
 
     setShips(ALL_SHIP);
   }, []);
+
+  useMemo(() => {
+    if (isReady) {
+      readyGame(true);
+    }
+  }, [isReady]);
+
+  // useEffect(() => {
+  //   const test = ships.filter((ship) => ship.isPositionCell === null);
+  //   console.log(test);
+  //   if (test.length === 0) {
+  //     setIsReady(true);
+  //   }
+  // }, [ships]);
 
   return (
     <CanvasContainer

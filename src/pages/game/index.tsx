@@ -15,6 +15,7 @@ const BoardContainer = styled('div')(() => ({
 }));
 
 export const Game = () => {
+  const [isReady, setIsReady] = useState<boolean>(false);
   const [board, setBoard] = useState<number[][] | null>(null);
   const [typeGame, setTypeGame] = useState<TypeGame>(TypeGame.preparation);
 
@@ -35,20 +36,32 @@ export const Game = () => {
     console.log(ship, 'Поражен');
   };
 
+  const readyGame = (isReady: boolean): void => {
+    setIsReady(isReady);
+  };
+
+  const startGame = () => {
+    setTypeGame(TypeGame.battle);
+  };
+
   useEffect(() => {
     setBoard(initBoard(COUNT_CELL));
   }, []);
 
   return (
-    <BoardContainer>
-      {!!board && (
-        <GameSea
-          board={board}
-          callbackCellSelect={cellSelect}
-          callbackDeadShip={deadShipHandler}
-          showShip={true}
-        />
-      )}
-    </BoardContainer>
+    <>
+      <BoardContainer>
+        {!!board && (
+          <GameSea
+            board={board}
+            callbackCellSelect={cellSelect}
+            callbackDeadShip={deadShipHandler}
+            showShip={true}
+            readyGame={readyGame}
+          />
+        )}
+      </BoardContainer>
+      <button onClick={startGame}>Начать игру</button>
+    </>
   );
 };
