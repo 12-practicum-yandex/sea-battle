@@ -13,15 +13,16 @@ export const SignIn = () => {
 
   const [signInMutation, { isLoading: isSignInMutationLoading }] = useSignInMutation();
 
-  const onSubmit = (values: TSignInFormValues) =>
-    signInMutation(values)
-      .unwrap()
-      .then(() => navigate(ROUTES.INIT_GAME))
-      .catch(() => {
-        enqueueSnackbar('Что-то пошло не так', {
-          variant: 'error',
-        });
+  const onSubmit = async (values: TSignInFormValues) => {
+    try {
+      await signInMutation(values).unwrap();
+      navigate(ROUTES.INIT_GAME);
+    } catch (error) {
+      enqueueSnackbar('Что-то пошло не так', {
+        variant: 'error',
       });
+    }
+  };
 
   return (
     <PageLayout isCenter>

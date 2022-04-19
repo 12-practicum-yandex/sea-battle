@@ -13,22 +13,23 @@ export const SignUpPage = () => {
 
   const [signUpMutation, { isLoading }] = useSignUpMutation();
 
-  const onSubmit = (values: TSignUpFormValues) =>
-    signUpMutation({
-      email: values.email,
-      first_name: values['first-name'],
-      login: values.login,
-      password: values.password,
-      phone: values.phone,
-      second_name: values['second-name'],
-    })
-      .unwrap()
-      .then(() => navigate(ROUTES.INIT_GAME))
-      .catch(() => {
-        enqueueSnackbar('Что-то пошло не так', {
-          variant: 'error',
-        });
+  const onSubmit = async (values: TSignUpFormValues) => {
+    try {
+      signUpMutation({
+        email: values.email,
+        first_name: values['first-name'],
+        login: values.login,
+        password: values.password,
+        phone: values.phone,
+        second_name: values['second-name'],
+      }).unwrap();
+      navigate(ROUTES.INIT_GAME);
+    } catch (error) {
+      enqueueSnackbar('Что-то пошло не так', {
+        variant: 'error',
       });
+    }
+  };
 
   return (
     <PageLayout isCenter>
