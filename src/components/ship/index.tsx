@@ -1,12 +1,13 @@
 import { memo, useCallback } from 'react';
 import { PositionShip, ShipProps } from '@features/gameSea/types';
-import { styled } from '@mui/material';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import { IconButton, styled } from '@mui/material';
 
 type Props = {
   dragShip: ShipProps | null;
   data: ShipProps;
   isDragCallback: (ship: ShipProps) => void; // callback, передающая параметры корабля
-  changePositionShip: (id: number) => void; // callback, передающая параметры корабля
+  rotateShip: (id: number) => void; // callback, передающая параметры корабля
 };
 
 const ShipComponent = styled('div')(
@@ -29,7 +30,14 @@ const ShipComponent = styled('div')(
   }),
 );
 
-export const Ship = memo(({ data, isDragCallback, changePositionShip, dragShip }: Props) => {
+const ShipContainer = styled('div')(() => ({
+  flex: `1 0 25%`,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+export const Ship = memo(({ data, isDragCallback, rotateShip, dragShip }: Props) => {
   const onMouseDownHandler = useCallback(
     (e) => {
       if (e.nativeEvent.button === 0) {
@@ -40,12 +48,18 @@ export const Ship = memo(({ data, isDragCallback, changePositionShip, dragShip }
   );
 
   const positionShipHandler = useCallback(() => {
-    changePositionShip(data.id);
+    rotateShip(data.id);
   }, [data]);
 
   return (
-    <ShipComponent className="ship" onMouseDown={onMouseDownHandler} drag={dragShip} ship={data}>
-      <span onClick={positionShipHandler}>{data.id}</span>
-    </ShipComponent>
+    <ShipContainer>
+      <ShipComponent className="ship" onMouseDown={onMouseDownHandler} drag={dragShip} ship={data}>
+        {data.settings.countDeck !== 1 && (
+          <IconButton onClick={positionShipHandler}>
+            <RotateLeftIcon style={{ color: '#fff' }} />
+          </IconButton>
+        )}
+      </ShipComponent>
+    </ShipContainer>
   );
 });

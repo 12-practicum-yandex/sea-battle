@@ -5,6 +5,7 @@ type CheckHipShipType = (
   ships: ShipProps[],
 ) => { shipsClone: ShipProps[]; deadShip: ShipProps | null };
 
+// Проверяем попадание в корабль (если попали, то отнимаем 1 hp)
 export const checkHitShip: CheckHipShipType = (hitCell, ships) => {
   let deadShip = null;
   const shipsClone = JSON.parse(JSON.stringify(ships));

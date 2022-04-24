@@ -1,74 +1,41 @@
-import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { styled } from '@mui/material';
-import { redrawCell } from '@features/canvas/game-cell';
-import { ALL_SHIP } from '@constants/game';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { CanvasContainer, GameContainer, Header, ShipsContainer } from './styled';
+import { ALL_SHIP, COUNT_CELL } from '@constants/game';
 import { Ship } from '@components/ship';
 import { getIndexAndPositionCells } from '@features/gameSea/getIndexAndPositionCells';
 import { successTranslateShip } from '@features/gameSea/translateShip';
-import { drawBoard } from '@features/gameSea/drawBoard';
+import { drawBoard, drawCells } from '@features/gameSea/drawElement';
 import { drawMissAfterDead, setTypesHitOrShip } from '@features/gameSea/setTypesCells';
-import { CellProps, GameSeaProps, ShipProps } from '@features/gameSea/types';
-import { changePositionShip } from '@features/gameSea/changePositionShip';
-import { checkHitShip } from '@features/gameSea/checkHitShip';
+import { CellProps, IGame, ShipProps, TypeGame } from '@features/gameSea/types';
+import { rotateShip } from '@features/gameSea/rotateShip';
 import { CellType } from '@features/canvas/game-cell/types';
-
-const CanvasContainer = styled('div')(() => ({
-  display: 'flex',
-  width: 'min-content',
-  paddingRight: 20,
-  maxHeight: 500,
-}));
-
-const ShipsContainer = styled('div')(() => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  width: 330,
-}));
-
-type SetCellHandlerType = ({
-  typesCell,
-  ctx,
-  deadShip,
-}: {
-  typesCell: CellProps[];
-  ctx: CanvasRenderingContext2D;
-  deadShip: ShipProps | null;
-}) => void;
+import { Button } from '@mui/material';
+import { checkHitShip } from '@features/gameSea/checkHitShip';
+import { initBoard } from '@pages/game/initBoard';
 
 export const GameSea = ({
   board,
-  callbackCellSelect,
+  ships,
+  callbackShips,
+  isMe,
   callbackDeadShip,
-  showShip,
-  readyGame,
-}: GameSeaProps) => {
+  settings,
+  typeGame,
+  callbackBoard,
+}: IGame) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
-
-  const [isReady, setIsReady] = useState(false);
   const [dragShip, setDragShip] = useState<ShipProps | null>(null);
-  const [ships, setShips] = useState<ShipProps[] | []>([]);
 
-  // Передаем информацию родителю и делаем отрисовку
-  const setCellHandler: SetCellHandlerType = ({ typesCell, ctx, deadShip }) => {
-    if (deadShip !== null) {
-      callbackDeadShip(deadShip);
+  // Расставить корабли заново
+  const resetShip = () => {
+    const canvas = canvasRef.current;
+
+    if (canvas !== null && board.length > 0) {
+      drawBoard(canvas, board, true);
+      callbackShips(ALL_SHIP, isMe);
+      callbackBoard(initBoard(COUNT_CELL), isMe);
     }
-
-    callbackCellSelect(typesCell);
-
-    typesCell.forEach((cell) => {
-      if (!(!showShip && cell.type === CellType.ship)) {
-        redrawCell({
-          ctx,
-          params: {
-            indexX: cell.indexX,
-            indexY: cell.indexY,
-            type: cell.type,
-          },
-        });
-      }
-    });
   };
 
   const mouseMoveHandler = (e: MouseEvent<HTMLDivElement>) => {
@@ -85,44 +52,57 @@ export const GameSea = ({
     }
   };
 
-  const updateCellAfterDead = (deadShip: ShipProps, ctx: CanvasRenderingContext2D) => {
-    const cells = deadShip.isPositionCell;
-    if (cells !== null) {
-      const cellsAroundShip = drawMissAfterDead({ board, cells, ctx });
-      callbackCellSelect(cellsAroundShip);
-    }
+  // Отправляем измененную доску родителю
+  const callbackBoardHandler = (cells: CellProps[]) => {
+    const boardUpdate = JSON.parse(JSON.stringify(board));
+
+    cells.forEach((cell) => {
+      boardUpdate[cell.indexY][cell.indexX] = cell.type;
+    });
+
+    callbackBoard(boardUpdate, isMe);
   };
 
   const onMouseUpHandler = (e: MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
+    const isShip = dragShip !== null; // Перемещается ли в данный момент корабль
 
     if (canvas !== null) {
-      let deadShipItem = null;
       const ctx = canvas.getContext('2d');
-      const cells = getIndexAndPositionCells(e, canvas, dragShip); // Проверка выхода за пределы поля
-      const typesCell = setTypesHitOrShip({ cells, board, isShip: dragShip !== null }); // Проверка - можно ли расположить корабль или нанести удар
+      const cells = getIndexAndPositionCells(e, canvas, dragShip); // Проверка выхода за пределы поля (при клике или перемещения корабля)
+      const typesCells = setTypesHitOrShip({ cells, board, isShip }); // Проверка - можно ли расположить корабль или нанести удар
 
-      if (ctx !== null && typesCell !== null) {
-        if (typesCell.length === 1 && typesCell[0].type === CellType.hit) {
-          const { shipsClone, deadShip } = checkHitShip(typesCell[0], ships);
-          setShips(shipsClone);
-
-          if (deadShip !== null) {
-            deadShipItem = deadShip;
-            updateCellAfterDead(deadShip, ctx);
-          }
-        }
-
-        setCellHandler({ ctx, typesCell, deadShip: deadShipItem });
-
-        if (dragShip !== null) {
-          setShips(successTranslateShip(ships, dragShip.id, typesCell));
-          setDragShip(null);
-          return;
-        }
+      // Если расположили корабль
+      if (isShip && typesCells !== null && settings.translateShip) {
+        callbackShips(successTranslateShip(ships, dragShip.id, typesCells), isMe); // Отправляем изменения родителю
+        callbackBoardHandler(typesCells);
+        drawCells({ ctx, typesCell: typesCells }); // Перерисовываем ячейки
       }
 
-      setDragShip(null);
+      // Если попали по кораблю
+      if (typesCells !== null && typesCells[0].type === CellType.hit && settings.isClickCell) {
+        let cellAroundShip: CellProps[] = []; // Ячейки при потоплении корабля
+        const { shipsClone, deadShip } = checkHitShip(typesCells[0], ships);
+        callbackShips(shipsClone, isMe); // Отправляем изменения родителю
+
+        // Убили какой-то корабль
+        if (deadShip !== null) {
+          const cells = deadShip.isPositionCell;
+          cellAroundShip = drawMissAfterDead({ board, cells, ctx });
+          callbackDeadShip(deadShip);
+        }
+
+        callbackBoardHandler(typesCells.concat(cellAroundShip));
+        drawCells({ ctx, typesCell: typesCells }); // Перерисовываем ячейки
+      }
+
+      // Если промахнулись
+      if (typesCells !== null && typesCells[0].type === CellType.miss && settings.isClickCell) {
+        callbackBoardHandler(typesCells);
+        drawCells({ ctx, typesCell: typesCells }); // Перерисовываем ячейки
+      }
+
+      setDragShip(null); // Обнуляем данные перетаскиваемого корабля
     }
   };
 
@@ -135,58 +115,54 @@ export const GameSea = ({
     setDragShip(ship);
   };
 
-  const changePositionShipHandler = (id: number) => {
-    const allShips = changePositionShip(id, ships);
-    setShips(allShips);
+  const rotateShipHandler = (id: number) => {
+    const allShips = rotateShip(id, ships);
+    callbackShips(allShips, isMe); // Отправили изменения родителю
   };
 
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    if (canvas !== null && board.length > 0) {
-      drawBoard(canvas, board);
+    if (canvas !== null && board !== null) {
+      drawBoard(canvas, board, false);
     }
-
-    setShips(ALL_SHIP);
   }, []);
 
-  useMemo(() => {
-    if (isReady) {
-      readyGame(true);
-    }
-  }, [isReady]);
-
-  // useEffect(() => {
-  //   const test = ships.filter((ship) => ship.isPositionCell === null);
-  //   console.log(test);
-  //   if (test.length === 0) {
-  //     setIsReady(true);
-  //   }
-  // }, [ships]);
-
   return (
-    <CanvasContainer
-      onMouseMove={mouseMoveHandler}
-      onMouseUp={onMouseUpHandler}
-      onMouseLeave={onMouseLeaveHandler}
-      ref={boardRef}
-    >
-      <canvas ref={canvasRef} />
-
-      <ShipsContainer className="ships">
-        {ships.map(
-          (item) =>
-            item.isPositionCell === null && (
-              <Ship
-                key={item.id}
-                data={item}
-                isDragCallback={setDragShipHandler}
-                changePositionShip={changePositionShipHandler}
-                dragShip={dragShip}
-              />
-            ),
+    <GameContainer>
+      <Header>
+        <span>{isMe ? 'Вы' : 'Противник'}</span>
+        {typeGame === TypeGame.preparation && (
+          <Button variant="outlined" style={{ marginLeft: 10 }} onClick={resetShip}>
+            Расставить корабли заново
+          </Button>
         )}
-      </ShipsContainer>
-    </CanvasContainer>
+      </Header>
+      <CanvasContainer
+        onMouseMove={mouseMoveHandler}
+        onMouseUp={onMouseUpHandler}
+        onMouseLeave={onMouseLeaveHandler}
+        ref={boardRef}
+      >
+        <canvas ref={canvasRef} />
+
+        {typeGame === TypeGame.preparation && (
+          <ShipsContainer>
+            {ships.map(
+              (item) =>
+                item.isPositionCell === null && (
+                  <Ship
+                    key={item.id}
+                    data={item}
+                    isDragCallback={setDragShipHandler}
+                    rotateShip={rotateShipHandler}
+                    dragShip={dragShip}
+                  />
+                ),
+            )}
+          </ShipsContainer>
+        )}
+      </CanvasContainer>
+    </GameContainer>
   );
 };

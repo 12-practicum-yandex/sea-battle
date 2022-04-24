@@ -61,9 +61,11 @@ export const drawMissAfterDead = ({
   ctx,
 }: {
   board: number[][];
-  cells: CellProps[];
-  ctx: CanvasRenderingContext2D;
+  cells: CellProps[] | null;
+  ctx: CanvasRenderingContext2D | null;
 }): CellProps[] => {
+  if (ctx === null || cells === null) return [];
+
   let cellsAroundShip: CellProps[] = [];
 
   for (let i = 0; i < cells.length; i++) {
