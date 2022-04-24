@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, forwardRef } from 'react';
 import { Header } from '@components';
 
 const Wrapper = styled(Box)`
@@ -18,11 +18,11 @@ type Props = {
   children: ReactNode;
 };
 
-export const AuthPageLayout = ({ children }: Props) => {
+export const AuthPageLayout = forwardRef(({ children }: Props, ref) => {
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Header />
       <ContentWrapper>{children}</ContentWrapper>
     </Wrapper>
   );
-};
+});
