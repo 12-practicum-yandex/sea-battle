@@ -94,10 +94,12 @@ export const Header = () => {
           </ProfileName>
           <LogoutLink to={'/'}>Выход</LogoutLink>
         </ProfileLeft>
-        <Avatar variant="rounded" src={`${baseUrl}/resources${user?.avatar}`}>
-          {user?.first_name[0].toUpperCase()}
-          {user?.second_name[0].toUpperCase()}
-        </Avatar>
+        <Link to={ROUTES.PROFILE}>
+          <Avatar variant="rounded" src={`${baseUrl}/resources${user?.avatar}`}>
+            {user?.first_name[0].toUpperCase()}
+            {user?.second_name[0].toUpperCase()}
+          </Avatar>
+        </Link>
       </Profile>
     </HeaderWrapper>
   );
