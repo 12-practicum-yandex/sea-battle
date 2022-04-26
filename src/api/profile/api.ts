@@ -11,8 +11,15 @@ export const profileApi = instanceApi.injectEndpoints({
         body,
       }),
     }),
+    updateAvatar: builder.mutation<TGetUserResponse, FormData>({
+      query: (body) => ({
+        url: '/user/profile/avatar',
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useUpdateProfileMutation } = profileApi;
+export const { useUpdateProfileMutation, useUpdateAvatarMutation } = profileApi;

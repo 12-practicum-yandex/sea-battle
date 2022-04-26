@@ -3,7 +3,7 @@ import { AuthPageLayout } from '@layouts';
 import { useAuth } from '@features/auth';
 import { baseUrl } from '@constants/base-url';
 import { ProfileForm } from '@components/profile-form';
-import { useUpdateProfileMutation } from '@api/profile';
+import { useUpdateProfileMutation, useUpdateAvatarMutation } from '@api/profile';
 import { useCallback } from 'react';
 import { TProfileFormValues } from '@components/profile-form/types';
 
@@ -30,16 +30,27 @@ const Label = styled('label')`
 `;
 
 export const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   const [profileMutation, { isLoading }] = useUpdateProfileMutation();
+  const [avatarMutation] = useUpdateAvatarMutation();
 
   const onSubmit = useCallback(async (values: TProfileFormValues) => {
-    profileMutation(values).unwrap();
+    profileMutation(values)
+      .unwrap()
+      .then((res) => {
+        setUser(res);
+      });
   }, []);
 
   const onChangeAvatar = (e: any) => {
-    console.log(e.target.files);
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    avatarMutation(formData)
+      .unwrap()
+      .then((res) => {
+        setUser(res);
+      });
   };
 
   return (
