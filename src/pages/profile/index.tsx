@@ -1,7 +1,7 @@
 import { styled, Card as CardBase, Avatar, Input as InputBase } from '@mui/material';
 import { AuthPageLayout } from '@layouts';
-import { ProfileForm } from '@components';
-import { useCallback } from 'react';
+import { useAuth } from '@features/auth';
+import { baseUrl } from '@constants/base-url';
 
 const ContentWrapper = styled('div')`
   display: flex;
@@ -26,11 +26,7 @@ const Label = styled('label')`
 `;
 
 export const ProfilePage = () => {
-  const onSubmit = useCallback((values: any) => {
-    console.log(values);
-
-    return Promise.resolve();
-  }, []);
+  const { user } = useAuth();
 
   const onChangeAvatar = (e: any) => {
     console.log(e.target.files);
@@ -41,18 +37,17 @@ export const ProfilePage = () => {
       <ContentWrapper>
         <Card>
           <Label htmlFor="avatar">
-            <Avatar sx={{ width: 130, height: 130 }} variant="rounded">
-              NO
+            <Avatar
+              src={`${baseUrl}/resources${user?.avatar}`}
+              sx={{ width: 130, height: 130 }}
+              variant="rounded"
+            >
+              {user?.first_name[0].toUpperCase()}
+              {user?.second_name[0].toUpperCase()}
             </Avatar>
             <Input onChange={onChangeAvatar} id={'avatar'} type={'file'} />
           </Label>
         </Card>
-        <ProfileForm
-          onSubmit={onSubmit}
-          isLoading={false}
-          submitButtonText={'Изменить данные'}
-          isVisibleLoginLink={false}
-        />
       </ContentWrapper>
     </AuthPageLayout>
   );

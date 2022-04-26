@@ -1,6 +1,8 @@
 import { styled, Avatar } from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
+import { useAuth } from '@features/auth';
+import { baseUrl } from '@constants/base-url';
 
 const HeaderWrapper = styled('div')`
   display: flex;
@@ -74,6 +76,7 @@ const menu = [
 ];
 
 export const Header = () => {
+  const { user } = useAuth();
   return (
     <HeaderWrapper>
       <Title>Атлантида</Title>
@@ -86,10 +89,15 @@ export const Header = () => {
       </Navigation>
       <Profile>
         <ProfileLeft>
-          <ProfileName>No Name</ProfileName>
+          <ProfileName>
+            {[user?.first_name, user?.second_name].filter(Boolean).join(' ')}
+          </ProfileName>
           <LogoutLink to={'/'}>Выход</LogoutLink>
         </ProfileLeft>
-        <Avatar variant="rounded">NO</Avatar>
+        <Avatar variant="rounded" src={`${baseUrl}/resources${user?.avatar}`}>
+          {user?.first_name[0].toUpperCase()}
+          {user?.second_name[0].toUpperCase()}
+        </Avatar>
       </Profile>
     </HeaderWrapper>
   );

@@ -1,6 +1,6 @@
 export enum SignUpFormNames {
-  FirstName = 'first-name',
-  SecondName = 'second-name',
+  FirstName = 'first_name',
+  SecondName = 'second_name',
   Login = 'login',
   email = 'email',
   password = 'password',

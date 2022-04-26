@@ -20,8 +20,8 @@ import { TextMaskCustom } from '../text-mask-custom';
 
 const schema = yup
   .object({
-    'first-name': yup.string().required('Обязательно поле'),
-    'second-name': yup.string().required('Обязательно поле'),
+    first_name: yup.string().required('Обязательно поле'),
+    second_name: yup.string().required('Обязательно поле'),
     email: yup.string().required('Обязательно поле').matches(regexp.email, 'Неверный формат'),
     login: yup.string().required('Обязательно поле'),
     password: yup.string().required('Обязательно поле'),
@@ -37,8 +37,8 @@ const Content = styled(CardContent)`
 `;
 
 const defaultValues: TSignUpFormValues = {
-  'first-name': '',
-  'second-name': '',
+  first_name: '',
+  second_name: '',
   email: '',
   login: '',
   password: '',
@@ -52,7 +52,7 @@ type Props = {
   isVisibleLoginLink?: boolean;
 };
 
-export const ProfileForm = ({
+export const SignUpForm = ({
   onSubmit,
   isLoading,
   submitButtonText,
@@ -72,17 +72,17 @@ export const ProfileForm = ({
           <TextField
             fullWidth
             label="Имя"
-            {...register('first-name')}
-            helperText={errors['first-name']?.message}
-            error={Boolean(errors['first-name'])}
+            {...register('first_name')}
+            helperText={errors['first_name']?.message}
+            error={Boolean(errors['first_name'])}
             disabled={isLoading}
           />
           <TextField
             fullWidth
             label="Фамилия"
-            {...register('second-name')}
-            helperText={errors['second-name']?.message}
-            error={Boolean(errors['second-name'])}
+            {...register('second_name')}
+            helperText={errors['second_name']?.message}
+            error={Boolean(errors['second_name'])}
             disabled={isLoading}
           />
           <TextField
