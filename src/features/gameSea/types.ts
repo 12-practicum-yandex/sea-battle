@@ -1,5 +1,10 @@
-import { callbackCellSelect } from '@pages/game';
 import { CellType } from '@features/canvas/game-cell/types';
+import { CallbackBoardType, CallbackShipsType } from '@pages/game';
+
+export enum TypeGame {
+  'preparation',
+  'battle',
+}
 
 export enum PositionShip {
   'vertical',
@@ -16,15 +21,32 @@ export type ShipProps = {
     x: number;
     y: number;
   };
+  hp: number;
+  isPositionCell: null | CellProps[];
 };
 
-export type GameSeaProps = {
-  board: number[][];
-  callbackCellSelect: callbackCellSelect;
+export type GameProps = {
+  board: BoardType;
+  ships: ShipProps[];
+  callbackBoard: CallbackBoardType;
+  callbackShips: CallbackShipsType;
+  callbackDeadShip: (deadShip: ShipProps) => void;
+  typeGame: TypeGame | null;
+  isMe: boolean;
 };
+
+export interface IGame extends GameProps {
+  settings: {
+    translateShip: boolean;
+    isClickCell: boolean;
+    showShip: boolean;
+  };
+}
 
 export type CellProps = {
   indexX: number;
   indexY: number;
   type?: CellType;
 };
+
+export type BoardType = CellType[][];

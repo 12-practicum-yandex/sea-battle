@@ -1,7 +1,7 @@
 import { PositionShip, ShipProps } from '@features/gameSea/types';
 
-// Изменяем позиционирование корабля
-export const changePositionShip = (id: number, ships: ShipProps[]) => {
+// Изменяем изменяем данные при перевороте корабля
+export const rotateShip = (id: number, ships: ShipProps[]) => {
   const allShips: ShipProps[] = JSON.parse(JSON.stringify(ships));
 
   allShips.forEach((item) => {

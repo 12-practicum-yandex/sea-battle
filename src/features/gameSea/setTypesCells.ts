@@ -1,5 +1,6 @@
 import { CellType } from '@features/canvas/game-cell/types';
 import { CellProps } from '@features/gameSea/types';
+import { redrawCell } from '@features/canvas/game-cell';
 
 type setTypesCells = ({
   cells,
@@ -11,9 +12,27 @@ type setTypesCells = ({
   isShip: boolean;
 }) => CellProps[] | null;
 
-type checkProp = (board: number[][], cells: CellProps[]) => CellType | null;
+type CheckProp = (board: number[][], cells: CellProps[]) => CellType | null;
 
-export const setTypesCells: setTypesCells = ({ cells, board, isShip }) => {
+type GetDataCellType = ({
+  board,
+  x,
+  y,
+}: {
+  board: number[][];
+  x: number;
+  y: number;
+}) => CellProps | null;
+
+type CheckCellAroundType = ({
+  board,
+  cell,
+}: {
+  board: number[][];
+  cell: CellProps;
+}) => Record<string, CellProps>;
+
+export const setTypesHitOrShip: setTypesCells = ({ cells, board, isShip }) => {
   if (cells === null) return null;
 
   let cellUpdate: CellProps[] | null = null;
@@ -36,7 +55,79 @@ export const setTypesCells: setTypesCells = ({ cells, board, isShip }) => {
   return cellUpdate;
 };
 
-const checkHit: checkProp = (board, cells) => {
+export const drawMissAfterDead = ({
+  board,
+  cells,
+  ctx,
+}: {
+  board: number[][];
+  cells: CellProps[] | null;
+  ctx: CanvasRenderingContext2D | null;
+}): CellProps[] => {
+  if (ctx === null || cells === null) return [];
+
+  let cellsAroundShip: CellProps[] = [];
+
+  for (let i = 0; i < cells.length; i++) {
+    const cellsAround = checkCellAround({ board, cell: cells[i] });
+
+    cellsAroundShip = Object.values(cellsAround).filter(
+      (cell) => cell !== null && cell.type === CellType.empty,
+    );
+
+    cellsAroundShip.forEach((cell) => {
+      if (cell !== null) {
+        const { indexX, indexY } = cell;
+        redrawCell({ ctx, params: { indexX, indexY, type: CellType.miss } });
+      }
+    });
+  }
+
+  return cellsAroundShip;
+};
+
+const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
+  const x = cell.indexX;
+  const y = cell.indexY;
+
+  const bottomCell = getDataCell({ board, x, y: y + 1 });
+  const topCell = getDataCell({ board, x, y: y - 1 });
+  const rightCell = getDataCell({ board, x: x + 1, y: y });
+  const leftCell = getDataCell({ board, x: x - 1, y: y });
+
+  const topLeft = getDataCell({ board, x: x - 1, y: y - 1 });
+  const topRight = getDataCell({ board, x: x + 1, y: y - 1 });
+  const bottomLeft = getDataCell({ board, x: x - 1, y: y + 1 });
+  const bottomRight = getDataCell({ board, x: x + 1, y: y + 1 });
+
+  const allCells = {
+    bottomCell,
+    topCell,
+    rightCell,
+    leftCell,
+    topLeft,
+    topRight,
+    bottomLeft,
+    bottomRight,
+  };
+
+  // Костыль, помогает при типизации
+  return JSON.parse(
+    JSON.stringify(
+      Object.fromEntries(Object.entries(allCells).filter(([_, cell]) => cell !== null)),
+    ),
+  );
+};
+
+const getDataCell: GetDataCellType = ({ board, x, y }) => {
+  if (board[y] !== undefined && board[y][x] !== undefined) {
+    return { indexX: x, indexY: y, type: board[y][x] };
+  } else {
+    return null;
+  }
+};
+
+const checkHit: CheckProp = (board, cells) => {
   let type = null;
 
   if (cells.length === 1) {
@@ -54,35 +145,18 @@ const checkHit: checkProp = (board, cells) => {
   return type;
 };
 
-const checkShip: checkProp = (board, cells) => {
-  let type: CellType.ship | null = CellType.ship;
+const checkShip: CheckProp = (board, cells) => {
+  const type: CellType.ship | null = CellType.ship;
 
   for (let i = 0; i < cells.length; i++) {
-    const x = cells[i].indexX;
-    const y = cells[i].indexY;
+    const cell = cells[i];
+    const cellsAround = checkCellAround({ board, cell });
+    const shipsAround = Object.values(cellsAround).filter(
+      (cell) => cell !== null && cell.type === CellType.ship,
+    );
 
-    const isBottomCell = (board[y + 1] && board[y + 1][x]) !== undefined;
-    const isTopCell = (board[y - 1] && board[y - 1][x]) !== undefined;
-    const isRightCell = board[y][x + 1] !== undefined;
-    const isLeftCell = board[y][x - 1] !== undefined;
-
-    const topLeftCorner = isTopCell && isLeftCell;
-    const topRightCorner = isTopCell && isRightCell;
-    const bottomLeftCorner = isBottomCell && isLeftCell;
-    const bottomRightCorner = isBottomCell && isRightCell;
-
-    if (
-      (isBottomCell && board[y + 1][x] === CellType.ship) ||
-      (isTopCell && board[y - 1][x] === CellType.ship) ||
-      (isRightCell && board[y][x + 1] === CellType.ship) ||
-      (isLeftCell && board[y][x - 1] === CellType.ship) ||
-      (topLeftCorner && board[y - 1][x - 1] === CellType.ship) ||
-      (topRightCorner && board[y - 1][x + 1] === CellType.ship) ||
-      (bottomLeftCorner && board[y + 1][x - 1] === CellType.ship) ||
-      (bottomRightCorner && board[y + 1][x + 1] === CellType.ship)
-    ) {
-      type = null;
-      break;
+    if (shipsAround.length > 0) {
+      return null;
     }
   }
 
