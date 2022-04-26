@@ -2,6 +2,10 @@ import { styled, Card as CardBase, Avatar, Input as InputBase } from '@mui/mater
 import { AuthPageLayout } from '@layouts';
 import { useAuth } from '@features/auth';
 import { baseUrl } from '@constants/base-url';
+import { ProfileForm } from '@components/profile-form';
+import { useUpdateProfileMutation } from '@api/profile';
+import { useCallback } from 'react';
+import { TProfileFormValues } from '@components/profile-form/types';
 
 const ContentWrapper = styled('div')`
   display: flex;
@@ -28,6 +32,12 @@ const Label = styled('label')`
 export const ProfilePage = () => {
   const { user } = useAuth();
 
+  const [profileMutation, { isLoading }] = useUpdateProfileMutation();
+
+  const onSubmit = useCallback(async (values: TProfileFormValues) => {
+    profileMutation(values).unwrap();
+  }, []);
+
   const onChangeAvatar = (e: any) => {
     console.log(e.target.files);
   };
@@ -48,6 +58,7 @@ export const ProfilePage = () => {
             <Input onChange={onChangeAvatar} id={'avatar'} type={'file'} />
           </Label>
         </Card>
+        <ProfileForm onSubmit={onSubmit} initialValues={user} isLoading={isLoading} />
       </ContentWrapper>
     </AuthPageLayout>
   );
