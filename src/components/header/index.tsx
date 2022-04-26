@@ -1,8 +1,9 @@
-import { styled, Avatar } from '@mui/material';
-import { Link, NavLink } from 'react-router-dom';
+import { styled, Avatar, Typography } from '@mui/material';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@features/auth';
 import { baseUrl } from '@constants/base-url';
+import { useLogoutMutation } from '@api/auth';
 
 const HeaderWrapper = styled('div')`
   display: flex;
@@ -53,7 +54,7 @@ const ProfileName = styled('div')`
   color: #1e1e1e;
 `;
 
-const LogoutLink = styled(Link)`
+const LogoutLink = styled(Typography)`
   color: #1e4676;
   font-size: 14px;
   line-height: 18px;
@@ -76,7 +77,14 @@ const menu = [
 ];
 
 export const Header = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
+  const [logoutMutation] = useLogoutMutation();
+  const handleLogout = () => {
+    logoutMutation().then(() => {
+      navigate(ROUTES.CHECK_AUTH);
+    });
+  };
   return (
     <HeaderWrapper>
       <Title>Атлантида</Title>
@@ -92,7 +100,7 @@ export const Header = () => {
           <ProfileName>
             {[user?.first_name, user?.second_name].filter(Boolean).join(' ')}
           </ProfileName>
-          <LogoutLink to={'/'}>Выход</LogoutLink>
+          <LogoutLink onClick={handleLogout}>Выход</LogoutLink>
         </ProfileLeft>
         <Link to={ROUTES.PROFILE}>
           <Avatar variant="rounded" src={`${baseUrl}/resources${user?.avatar}`}>
