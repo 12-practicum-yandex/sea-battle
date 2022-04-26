@@ -29,7 +29,7 @@ const Content = styled(CardContent)`
 
 type Props = {
   isLoading: boolean;
-  onSubmit: (values: TProfileFormValues) => Promise<void>;
+  onSubmit: (values: TProfileFormValues) => void;
   submitButtonText?: string;
   initialValues: TGetUserResponse | null;
 };

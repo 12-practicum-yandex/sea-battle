@@ -35,7 +35,7 @@ export const ProfilePage = () => {
   const [profileMutation, { isLoading }] = useUpdateProfileMutation();
   const [avatarMutation] = useUpdateAvatarMutation();
 
-  const onSubmit = useCallback(async (values: TProfileFormValues) => {
+  const onSubmit = useCallback((values: TProfileFormValues) => {
     profileMutation(values)
       .unwrap()
       .then((res) => {
