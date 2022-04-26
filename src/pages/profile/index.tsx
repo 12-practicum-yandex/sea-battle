@@ -6,6 +6,7 @@ import { ProfileForm } from '@components/profile-form';
 import { useUpdateProfileMutation, useUpdateAvatarMutation } from '@api/profile';
 import { useCallback } from 'react';
 import { TProfileFormValues } from '@components/profile-form/types';
+import { useSnackbar } from 'notistack';
 
 const ContentWrapper = styled('div')`
   display: flex;
@@ -31,26 +32,33 @@ const Label = styled('label')`
 
 export const ProfilePage = () => {
   const { user, setUser } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [profileMutation, { isLoading }] = useUpdateProfileMutation();
   const [avatarMutation] = useUpdateAvatarMutation();
 
-  const onSubmit = useCallback((values: TProfileFormValues) => {
-    profileMutation(values)
-      .unwrap()
-      .then((res) => {
-        setUser(res);
+  const onSubmit = useCallback(async (values: TProfileFormValues) => {
+    try {
+      const res = await profileMutation(values).unwrap();
+      setUser(res);
+    } catch (e) {
+      enqueueSnackbar('Не удалось обновить профиль', {
+        variant: 'error',
       });
+    }
   }, []);
 
-  const onChangeAvatar = (e: any) => {
-    const formData = new FormData();
-    formData.append('avatar', e.target.files[0]);
-    avatarMutation(formData)
-      .unwrap()
-      .then((res) => {
-        setUser(res);
+  const onChangeAvatar = async (e: any) => {
+    try {
+      const formData = new FormData();
+      formData.append('avatar', e.target.files[0]);
+      const res = await avatarMutation(formData).unwrap();
+      setUser(res);
+    } catch (e) {
+      enqueueSnackbar('Не удалось обновить аватар', {
+        variant: 'error',
       });
+    }
   };
 
   return (
