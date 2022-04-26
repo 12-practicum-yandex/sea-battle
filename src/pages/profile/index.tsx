@@ -1,4 +1,4 @@
-import { styled, Card as CardBase, Avatar, Input as InputBase } from '@mui/material';
+import { styled, Card as CardBase, Avatar } from '@mui/material';
 import { AuthPageLayout } from '@layouts';
 import { useAuth } from '@features/auth';
 import { baseUrl } from '@constants/base-url';
@@ -21,7 +21,7 @@ const Card = styled(CardBase)`
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 
-const Input = styled(InputBase)`
+const Input = styled('input')`
   display: none;
 `;
 
@@ -45,7 +45,7 @@ export const ProfilePage = () => {
 
   const onChangeAvatar = (e: any) => {
     const formData = new FormData();
-    formData.append('file', e.target.files[0]);
+    formData.append('avatar', e.target.files[0]);
     avatarMutation(formData)
       .unwrap()
       .then((res) => {
