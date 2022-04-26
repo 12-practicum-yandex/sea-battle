@@ -1,30 +1,21 @@
-import { useForm, Controller } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import {
-  TextField,
-  Link,
-  styled,
-  Card,
-  CardContent,
-  Button,
-  CircularProgress,
-} from '@mui/material';
 
-import { ROUTES } from '@constants/routes';
+import * as yup from 'yup';
+import { TextField, styled, Card, CardContent, Button, CircularProgress } from '@mui/material';
+
 import { regexp } from '@constants/regexp';
 
-import { TSignUpFormValues } from './types';
-import { TextMaskCustom } from '../text-mask-custom';
+import { ProfileFormNames, TProfileFormValues } from './types';
+import { TGetUserResponse } from '@api/auth/types';
 
 const schema = yup
   .object({
-    'first-name': yup.string().required('Обязательно поле'),
-    'second-name': yup.string().required('Обязательно поле'),
+    first_name: yup.string().required('Обязательно поле'),
+    second_name: yup.string().required('Обязательно поле'),
     email: yup.string().required('Обязательно поле').matches(regexp.email, 'Неверный формат'),
     login: yup.string().required('Обязательно поле'),
-    password: yup.string().required('Обязательно поле'),
+    display_name: yup.string().required('Обязательно поле'),
     phone: yup.string().required('Обязательно поле').matches(regexp.phone, 'Неверный формат'),
   })
   .required();
@@ -36,34 +27,19 @@ const Content = styled(CardContent)`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-const defaultValues: TSignUpFormValues = {
-  'first-name': '',
-  'second-name': '',
-  email: '',
-  login: '',
-  password: '',
-  phone: '',
-};
-
 type Props = {
   isLoading: boolean;
-  onSubmit: (values: TSignUpFormValues) => Promise<unknown>;
+  onSubmit: (values: TProfileFormValues) => void;
   submitButtonText?: string;
-  isVisibleLoginLink?: boolean;
+  initialValues: TGetUserResponse | null;
 };
 
-export const ProfileForm = ({
-  onSubmit,
-  isLoading,
-  submitButtonText,
-  isVisibleLoginLink = true,
-}: Props) => {
+export const ProfileForm = ({ onSubmit, isLoading, submitButtonText, initialValues }: Props) => {
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues, resolver: yupResolver(schema), mode: 'all' });
+  } = useForm({ defaultValues: initialValues || {}, resolver: yupResolver(schema), mode: 'all' });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,69 +48,53 @@ export const ProfileForm = ({
           <TextField
             fullWidth
             label="Имя"
-            {...register('first-name')}
-            helperText={errors['first-name']?.message}
-            error={Boolean(errors['first-name'])}
+            {...register(ProfileFormNames.FirstName)}
+            helperText={errors[ProfileFormNames.FirstName]?.message}
+            error={Boolean(errors[ProfileFormNames.FirstName])}
             disabled={isLoading}
           />
           <TextField
             fullWidth
             label="Фамилия"
-            {...register('second-name')}
-            helperText={errors['second-name']?.message}
-            error={Boolean(errors['second-name'])}
+            {...register(ProfileFormNames.SecondName)}
+            helperText={errors[ProfileFormNames.SecondName]?.message}
+            error={Boolean(errors[ProfileFormNames.SecondName])}
             disabled={isLoading}
           />
           <TextField
             fullWidth
             label="Email"
-            {...register('email')}
-            helperText={errors['email']?.message}
-            error={Boolean(errors['email'])}
+            {...register(ProfileFormNames.Email)}
+            helperText={errors[ProfileFormNames.Email]?.message}
+            error={Boolean(errors[ProfileFormNames.Email])}
             disabled={isLoading}
           />
           <TextField
             fullWidth
             label="Логин"
-            {...register('login')}
-            helperText={errors['login']?.message}
-            error={Boolean(errors['login'])}
+            {...register(ProfileFormNames.Login)}
+            helperText={errors[ProfileFormNames.Login]?.message}
+            error={Boolean(errors[ProfileFormNames.Login])}
             disabled={isLoading}
           />
           <TextField
             fullWidth
-            label="Пароль"
-            {...register('password')}
-            helperText={errors['password']?.message}
-            error={Boolean(errors['password'])}
+            label="Отображаемое имя"
+            {...register(ProfileFormNames.DisplayName)}
+            helperText={errors[ProfileFormNames.DisplayName]?.message}
+            error={Boolean(errors[ProfileFormNames.DisplayName])}
             disabled={isLoading}
           />
-          <Controller
-            control={control}
-            name="phone"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Телефон"
-                helperText={errors['phone']?.message}
-                error={Boolean(errors['phone'])}
-                disabled={isLoading}
-                InputProps={{
-                  inputComponent: TextMaskCustom as any,
-                }}
-              />
-            )}
+          <TextField
+            fullWidth
+            label="Телефон"
+            {...register(ProfileFormNames.Phone)}
+            helperText={errors[ProfileFormNames.Phone]?.message}
+            error={Boolean(errors[ProfileFormNames.Phone])}
+            disabled={isLoading}
           />
-
-          {isVisibleLoginLink && (
-            <Link to={ROUTES.SIGN_IN} component={NavLink}>
-              Есть аккаунт
-            </Link>
-          )}
-
           <Button variant="outlined" type="submit" fullWidth disabled={isLoading}>
-            {isLoading ? <CircularProgress size={24} /> : submitButtonText || 'Зарегистрироваться'}
+            {isLoading ? <CircularProgress size={24} /> : submitButtonText || 'Изменить профиль'}
           </Button>
         </Content>
       </Card>

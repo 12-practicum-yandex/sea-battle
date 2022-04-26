@@ -1,9 +1,9 @@
 import { useSnackbar } from 'notistack';
 
 import { PageLayout } from '@layouts';
-import { ProfileForm } from '@components';
+import { SignUpForm } from '@components';
 import { useSignUpMutation } from '@api/auth';
-import { TSignUpFormValues } from '@components/profile-form/types';
+import { TSignUpFormValues } from '@components/sign-up-form/types';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 
@@ -17,11 +17,11 @@ export const SignUpPage = () => {
     try {
       signUpMutation({
         email: values.email,
-        first_name: values['first-name'],
+        first_name: values['first_name'],
         login: values.login,
         password: values.password,
         phone: values.phone,
-        second_name: values['second-name'],
+        second_name: values['second_name'],
       }).unwrap();
       navigate(ROUTES.INIT_GAME);
     } catch (error) {
@@ -33,7 +33,7 @@ export const SignUpPage = () => {
 
   return (
     <PageLayout isCenter>
-      <ProfileForm onSubmit={onSubmit} isLoading={isLoading} />
+      <SignUpForm onSubmit={onSubmit} isLoading={isLoading} />
     </PageLayout>
   );
 };

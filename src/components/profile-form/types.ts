@@ -1,10 +1,10 @@
-export enum SignUpFormNames {
-  FirstName = 'first-name',
-  SecondName = 'second-name',
+export enum ProfileFormNames {
+  FirstName = 'first_name',
+  SecondName = 'second_name',
   Login = 'login',
-  email = 'email',
-  password = 'password',
-  phone = 'phone',
+  Email = 'email',
+  Phone = 'phone',
+  DisplayName = 'display_name',
 }
 
-export type TSignUpFormValues = Record<SignUpFormNames, string>;
+export type TProfileFormValues = Record<ProfileFormNames, string>;
