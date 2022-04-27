@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@features/auth';
 import { baseUrl } from '@constants/base-url';
-import { useLogoutMutation } from '@api/auth';
+import { useLogoutMutation, useGetUserQuery } from '@api/auth';
 
 const HeaderWrapper = styled('div')`
   display: flex;
@@ -78,13 +78,15 @@ const menu = [
 
 export const Header = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { setAuth } = useAuth();
   const [logoutMutation] = useLogoutMutation();
   const handleLogout = () => {
     logoutMutation().then(() => {
-      navigate(ROUTES.CHECK_AUTH);
+      setAuth(false);
+      navigate(ROUTES.SIGN_IN);
     });
   };
+  const { data: userData } = useGetUserQuery();
   return (
     <HeaderWrapper>
       <Title>Атлантида</Title>
@@ -98,14 +100,14 @@ export const Header = () => {
       <Profile>
         <ProfileLeft>
           <ProfileName>
-            {[user?.first_name, user?.second_name].filter(Boolean).join(' ')}
+            {[userData?.first_name, userData?.second_name].filter(Boolean).join(' ')}
           </ProfileName>
           <LogoutLink onClick={handleLogout}>Выход</LogoutLink>
         </ProfileLeft>
         <Link to={ROUTES.PROFILE}>
-          <Avatar variant="rounded" src={`${baseUrl}/resources${user?.avatar}`}>
-            {user?.first_name[0].toUpperCase()}
-            {user?.second_name[0].toUpperCase()}
+          <Avatar variant="rounded" src={`${baseUrl}/resources${userData?.avatar}`}>
+            {userData?.first_name[0].toUpperCase()}
+            {userData?.second_name[0].toUpperCase()}
           </Avatar>
         </Link>
       </Profile>
