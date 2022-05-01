@@ -11,7 +11,6 @@ import {
   Page500,
   Game,
   ForumPage,
-  CheckAuth,
 } from '@pages';
 import { RequireAuth, SkipAuth } from '@features/auth';
 
@@ -19,7 +18,6 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={ROUTES.CHECK_AUTH} element={<CheckAuth />} />
         <Route
           path={ROUTES.SIGN_IN}
           element={

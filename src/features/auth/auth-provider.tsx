@@ -1,12 +1,12 @@
-import { ReactNode, createContext, useState } from 'react';
-
-import { TGetUserResponse } from '@api/auth/types';
+import { ReactNode, createContext, useState, useEffect } from 'react';
 
 import { TAuthContext } from './type';
 
+const AUTH_STORAGE_KEY = 'auth';
+
 const defaultAuthContextValue: TAuthContext = {
-  setUser: () => null,
-  user: null,
+  setAuth: () => null,
+  isAuth: false,
 };
 
 export const authContext = createContext<TAuthContext>(defaultAuthContextValue);
@@ -16,11 +16,23 @@ type Props = {
 };
 
 export const AuthProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<TGetUserResponse | null>(null);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    setIsAuth(Boolean(localStorage.getItem(AUTH_STORAGE_KEY)));
+  }, []);
 
   const value: TAuthContext = {
-    user,
-    setUser,
+    isAuth,
+    setAuth: (value) => {
+      if (value) {
+        localStorage.setItem(AUTH_STORAGE_KEY, 'true');
+        setIsAuth(true);
+      } else {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        setIsAuth(false);
+      }
+    },
   };
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>;

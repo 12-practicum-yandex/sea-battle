@@ -9,15 +9,11 @@ type Props = { children: JSX.Element };
 const loginRoutes = [ROUTES.SIGN_IN, ROUTES.SIGN_UP];
 
 export const SkipAuth = ({ children }: Props) => {
-  const auth = useAuth();
+  const { isAuth } = useAuth();
   const location = useLocation();
 
-  if (auth.user && loginRoutes.includes(location.pathname)) {
+  if (isAuth && loginRoutes.includes(location.pathname)) {
     return <Navigate to={ROUTES.GAME} replace />;
-  }
-
-  if (!auth.user) {
-    return <Navigate to={ROUTES.CHECK_AUTH} state={{ from: location }} replace />;
   }
 
   return children;

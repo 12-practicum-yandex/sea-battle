@@ -1,6 +1,4 @@
-import { TGetUserResponse } from '@api/auth/types';
-
 export type TAuthContext = {
-  user: TGetUserResponse | null;
-  setUser: (user: TGetUserResponse) => void;
+  isAuth: boolean;
+  setAuth: (value: boolean) => void;
 };
