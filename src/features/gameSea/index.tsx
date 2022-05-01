@@ -22,6 +22,7 @@ export const GameSea = ({
   settings,
   typeGame,
   callbackBoard,
+  isMeStep,
 }: IGame) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -53,17 +54,18 @@ export const GameSea = ({
   };
 
   // Отправляем измененную доску родителю
-  const callbackBoardHandler = (cells: CellProps[]) => {
+  // cellType - пока что только miss, для передачи хода
+  const callbackBoardHandler = (cells: CellProps[], cellType?: CellType) => {
     const boardUpdate = JSON.parse(JSON.stringify(board));
 
     cells.forEach((cell) => {
       boardUpdate[cell.indexY][cell.indexX] = cell.type;
     });
 
-    callbackBoard(boardUpdate, isMe);
+    callbackBoard(boardUpdate, isMe, cellType);
   };
 
-  const onMouseUpHandler = (e: MouseEvent<HTMLDivElement>) => {
+  const onMouseUpHandler = async (e: MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     const isShip = dragShip !== null; // Перемещается ли в данный момент корабль
 
@@ -83,13 +85,13 @@ export const GameSea = ({
       if (typesCells !== null && typesCells[0].type === CellType.hit && settings.isClickCell) {
         let cellAroundShip: CellProps[] = []; // Ячейки при потоплении корабля
         const { shipsClone, deadShip } = checkHitShip(typesCells[0], ships);
-        callbackShips(shipsClone, isMe); // Отправляем изменения родителю
+        await callbackShips(shipsClone, isMe); // Отправляем изменения родителю
 
         // Убили какой-то корабль
         if (deadShip !== null) {
           const cells = deadShip.isPositionCell;
           cellAroundShip = drawMissAfterDead({ board, cells, ctx });
-          callbackDeadShip(deadShip);
+          await callbackDeadShip(deadShip);
         }
 
         callbackBoardHandler(typesCells.concat(cellAroundShip));
@@ -98,7 +100,7 @@ export const GameSea = ({
 
       // Если промахнулись
       if (typesCells !== null && typesCells[0].type === CellType.miss && settings.isClickCell) {
-        callbackBoardHandler(typesCells);
+        callbackBoardHandler(typesCells, CellType.miss);
         drawCells({ ctx, typesCell: typesCells }); // Перерисовываем ячейки
       }
 
@@ -124,9 +126,9 @@ export const GameSea = ({
     const canvas = canvasRef.current;
 
     if (canvas !== null && board !== null) {
-      drawBoard(canvas, board, false);
+      drawBoard(canvas, board, false, settings.showShip);
     }
-  }, []);
+  }, [isMeStep]);
 
   return (
     <GameContainer>

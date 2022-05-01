@@ -3,7 +3,12 @@ import { drawCell, redrawCell } from '@features/canvas/game-cell';
 import { CellType } from '@features/canvas/game-cell/types';
 import { CellProps } from '@features/gameSea/types';
 
-export const drawBoard = (canvas: HTMLCanvasElement, board: CellType[][], reset: boolean) => {
+export const drawBoard = (
+  canvas: HTMLCanvasElement,
+  board: CellType[][],
+  reset: boolean,
+  showShip?: boolean,
+) => {
   canvas.width = DEFAULT_SIZE_CELL * COUNT_CELL;
   canvas.height = DEFAULT_SIZE_CELL * COUNT_CELL;
 
@@ -12,7 +17,10 @@ export const drawBoard = (canvas: HTMLCanvasElement, board: CellType[][], reset:
   if (ctx !== null) {
     for (let row = 0; row < board.length; row++) {
       for (let cell = 0; cell < board[row].length; cell++) {
-        const type = reset ? CellType.empty : board[row][cell];
+        let type = reset ? CellType.empty : board[row][cell];
+
+        if (type === CellType.ship && !showShip) type = CellType.empty; // Если не наш ход, то корабли - это пустая ячейка
+
         drawCell({ ctx, params: { indexX: cell, indexY: row, type } });
       }
     }
