@@ -33,3 +33,7 @@ npm run link
 ```sh
 npm run lint-fix
 ```
+
+## heroku
+
+https://sea-battle-practicum.herokuapp.com/
