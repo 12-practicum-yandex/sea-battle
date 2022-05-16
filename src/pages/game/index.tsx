@@ -7,6 +7,7 @@ import { Header } from '@components';
 import { BoardsWrapper, GameWrapper } from '@pages/game/styles';
 import { Footer } from '@pages/game/Footer';
 import { CellType } from '@features/canvas/game-cell/types';
+import { randomPlacementShips } from '@features/gameSea/random-placement-ships';
 
 export type GameType = { board: BoardType | null; ships: ShipProps[] };
 export type CallbackBoardType = (board: BoardType, isMeBoard: boolean, cellType?: CellType) => void;
@@ -51,16 +52,21 @@ export const Game = () => {
 
   const startBattleHandler = () => {
     const myShips = myGame.ships.filter((ship) => ship.isPositionCell !== null);
-    const enemyShips = enemyGame.ships.filter((ship) => ship.isPositionCell !== null);
 
+    // Я расставил корабли. Теперь расставляет противник (робот)
     if (myShips.length === 10) {
-      setIsMeStep(false); // Я расставил корабли. Теперь расставляет противник
-    }
+      const enemyGameRandom = randomPlacementShips(enemyGame);
 
-    if (enemyShips.length === 10) {
-      setIsMeStep(true); // Противник расставил корабли, теперь я хожу
-      setTypeGame(TypeGame.battle);
+      if (enemyGameRandom !== null) {
+        setEnemyGame(enemyGameRandom);
+        setTypeGame(TypeGame.battle);
+      }
     }
+  };
+
+  const placementShipsHandler = () => {
+    const myGameRandom = randomPlacementShips(myGame);
+    if (myGameRandom !== null) setMyGame(myGameRandom);
   };
 
   useEffect(() => {
@@ -107,7 +113,13 @@ export const Game = () => {
             />
           )}
       </BoardsWrapper>
-      <Footer type={typeGame} startGame={startGameHandler} startBattle={startBattleHandler} />
+      <Footer
+        type={typeGame}
+        startGame={startGameHandler}
+        startBattle={startBattleHandler}
+        placementShipsHandler={placementShipsHandler}
+        isMeStep={isMeStep}
+      />
     </GameWrapper>
   );
 };

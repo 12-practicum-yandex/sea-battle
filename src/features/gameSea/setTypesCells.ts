@@ -89,7 +89,7 @@ export const drawMissAfterDead = ({
   return cellsAroundShip;
 };
 
-const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
+export const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
   const x = cell.indexX;
   const y = cell.indexY;
 

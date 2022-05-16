@@ -128,7 +128,7 @@ export const GameSea = ({
     if (canvas !== null && board !== null) {
       drawBoard(canvas, board, false, settings.showShip);
     }
-  }, [isMeStep]);
+  }, [isMeStep, board]);
 
   return (
     <GameContainer>
