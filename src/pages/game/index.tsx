@@ -6,18 +6,26 @@ import { GameSettings } from '@features/gameSea/hooks/GameSettings';
 import { Header } from '@components';
 import { BoardsWrapper, GameWrapper } from '@pages/game/styles';
 import { Footer } from '@pages/game/Footer';
+import { CellType } from '@features/canvas/game-cell/types';
+import { randomPlacementShips } from '@features/gameSea/random-placement-ships';
 
 export type GameType = { board: BoardType | null; ships: ShipProps[] };
-export type CallbackBoardType = (board: BoardType, isMeBoard: boolean) => void;
+export type CallbackBoardType = (board: BoardType, isMeBoard: boolean, cellType?: CellType) => void;
 export type CallbackShipsType = (ships: ShipProps[], isMeShips: boolean) => void;
 
 export const Game = () => {
+  const [isMeStep, setIsMeStep] = useState<boolean>(true);
   const [myGame, setMyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для нашей игры
   const [enemyGame, setEnemyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для игры соперника
   const [typeGame, setTypeGame] = useState<TypeGame | null>(null);
 
   // Возвращает матрицу после любых изменений (попадание по кораблю, расстановка кораблей и т.д.)
-  const callbackBoard: CallbackBoardType = (board, isMeBoard) => {
+  const callbackBoard: CallbackBoardType = (board, isMeBoard, cellType) => {
+    // Передача хода
+    if (cellType === CellType.miss) {
+      setIsMeStep((prev) => !prev);
+    }
+
     if (isMeBoard) {
       setMyGame((prev) => ({ ...prev, board }));
     } else {
@@ -44,11 +52,21 @@ export const Game = () => {
 
   const startBattleHandler = () => {
     const myShips = myGame.ships.filter((ship) => ship.isPositionCell !== null);
-    const enemyShips = enemyGame.ships.filter((ship) => ship.isPositionCell !== null);
 
-    if (myShips.length === 10 && enemyShips.length === 10) {
-      setTypeGame(TypeGame.battle);
+    // Я расставил корабли. Теперь расставляет противник (робот)
+    if (myShips.length === 10) {
+      const enemyGameRandom = randomPlacementShips(enemyGame);
+
+      if (enemyGameRandom !== null) {
+        setEnemyGame(enemyGameRandom);
+        setTypeGame(TypeGame.battle);
+      }
     }
+  };
+
+  const placementShipsHandler = () => {
+    const myGameRandom = randomPlacementShips(myGame);
+    if (myGameRandom !== null) setMyGame(myGameRandom);
   };
 
   useEffect(() => {
@@ -67,6 +85,7 @@ export const Game = () => {
   return (
     <GameWrapper>
       <Header />
+      <span>{isMeStep ? 'Ваш ход' : 'Ход противника'}</span>
       <BoardsWrapper>
         {myGame.board !== null && (
           <GameSettings
@@ -77,6 +96,7 @@ export const Game = () => {
             callbackDeadShip={deadShipHandler}
             typeGame={typeGame}
             isMe={true}
+            isMeStep={isMeStep}
           />
         )}
         {enemyGame.board !== null &&
@@ -89,10 +109,17 @@ export const Game = () => {
               callbackDeadShip={deadShipHandler}
               typeGame={typeGame}
               isMe={false}
+              isMeStep={!isMeStep}
             />
           )}
       </BoardsWrapper>
-      <Footer type={typeGame} startGame={startGameHandler} startBattle={startBattleHandler} />
+      <Footer
+        type={typeGame}
+        startGame={startGameHandler}
+        startBattle={startBattleHandler}
+        placementShipsHandler={placementShipsHandler}
+        isMeStep={isMeStep}
+      />
     </GameWrapper>
   );
 };
