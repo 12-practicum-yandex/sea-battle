@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { initBoard } from './initBoard';
 import { ALL_SHIP, COUNT_CELL } from '@constants/game';
 import { BoardType, GameProps, ShipProps, TypeGame } from '@features/gameSea/types';
@@ -8,6 +8,8 @@ import { BoardsWrapper, GameWrapper } from '@pages/game/styles';
 import { Footer } from '@pages/game/Footer';
 import { CellType } from '@features/canvas/game-cell/types';
 import { randomPlacementShips } from '@features/gameSea/random-placement-ships';
+import { ILeaderboardItem, TEAM_NAME, useAddToLeaderboardMutation } from '@api/leaderboard';
+import { useGetUserQuery } from '@api/auth';
 
 export type GameType = { board: BoardType | null; ships: ShipProps[] };
 export type CallbackBoardType = (board: BoardType, isMeBoard: boolean, cellType?: CellType) => void;
@@ -18,6 +20,31 @@ export const Game = () => {
   const [myGame, setMyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для нашей игры
   const [enemyGame, setEnemyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для игры соперника
   const [typeGame, setTypeGame] = useState<TypeGame | null>(null);
+  const { data: userData } = useGetUserQuery();
+
+  const sootCounterRef = useRef(0);
+  const isMyWin = useRef(false);
+  const [addToLeaderboard] = useAddToLeaderboardMutation();
+
+  const sendWinnerData = useCallback(() => {
+    // сколько всего здоровья у кораблей
+    const hpCounter = ALL_SHIP.reduce((acc, { hp }) => acc + hp, 0);
+    // Число попадений
+    const hitCounter = hpCounter;
+    // Число промахов
+    const missCounter = sootCounterRef.current - hpCounter;
+
+    // За попадение даем 3 очка, за промах отнимем одно
+    const score = hitCounter * 4 - missCounter;
+    addToLeaderboard({
+      data: {
+        ...userData,
+        score,
+      } as ILeaderboardItem,
+      ratingFieldName: 'score',
+      teamName: TEAM_NAME,
+    });
+  }, [userData]);
 
   // Возвращает матрицу после любых изменений (попадание по кораблю, расстановка кораблей и т.д.)
   const callbackBoard: CallbackBoardType = (board, isMeBoard, cellType) => {
@@ -29,6 +56,7 @@ export const Game = () => {
     if (isMeBoard) {
       setMyGame((prev) => ({ ...prev, board }));
     } else {
+      sootCounterRef.current++;
       setEnemyGame((prev) => ({ ...prev, board }));
     }
   };
@@ -48,6 +76,7 @@ export const Game = () => {
 
   const startGameHandler = () => {
     setTypeGame(TypeGame.preparation);
+    isMyWin.current = false;
   };
 
   const startBattleHandler = () => {
@@ -78,7 +107,11 @@ export const Game = () => {
     const enemyWin = myGame.ships.filter((ship) => ship.hp === 0).length === 10;
     const myWin = enemyGame.ships.filter((ship) => ship.hp === 0).length === 10;
 
-    if (myWin) alert('Вы победили');
+    if (myWin && !isMyWin.current) {
+      sendWinnerData();
+      alert('Вы победили');
+      isMyWin.current = true;
+    }
     if (enemyWin) alert('Вы проиграли');
   }, [myGame, enemyGame]);
 
