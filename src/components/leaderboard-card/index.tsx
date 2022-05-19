@@ -1,11 +1,13 @@
 import { FC, memo } from 'react';
 import { styled, Avatar } from '@mui/material';
+import { baseUrl } from '@constants/base-url';
 
 interface IProps {
   place: number;
-  imgUrl: string;
-  winCounter: number;
-  userName: string;
+  avatar: string;
+  score: number;
+  first_name: string;
+  second_name: string;
 }
 
 const Card = styled('div')`
@@ -58,14 +60,14 @@ const WinCounter = styled('div')`
 `;
 
 export const LeaderboardCard: FC<IProps> = memo(
-  ({ place, imgUrl, winCounter, userName }: IProps) => {
+  ({ place, score, first_name, second_name, avatar }: IProps) => {
     return (
       <Card>
         <Place>{place}</Place>
-        <Avatar src={imgUrl} />
-        <Name>{userName}</Name>
-        <WinTitle>Выиграно игр:</WinTitle>
-        <WinCounter>{winCounter}</WinCounter>
+        <Avatar src={`${baseUrl}/resources${avatar}`} />
+        <Name>{[first_name, second_name].join(' ')}</Name>
+        <WinTitle>Счет:</WinTitle>
+        <WinCounter>{score}</WinCounter>
       </Card>
     );
   },

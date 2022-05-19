@@ -1,6 +1,8 @@
 import { AuthPageLayout } from '@layouts';
 import { LeaderboardCard } from '@components';
-import { styled } from '@mui/material';
+import { styled, CircularProgress } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
+import { ILeaderboardItem, useGetTeamLeaderboardMutation } from '@api/leaderboard';
 
 const PageWrapper = styled('div')`
   display: flex;
@@ -8,28 +10,33 @@ const PageWrapper = styled('div')`
   align-items: stretch;
 `;
 
-const list = [
-  {
-    place: 1,
-    imgUrl: '',
-    winCounter: 12,
-    userName: 'Сафохин Артем Анатольевич',
-  },
-  {
-    place: 2,
-    imgUrl: '',
-    winCounter: 10,
-    userName: 'Сафохин Артем',
-  },
-];
-
 export const Leaderboard = () => {
+  const [leaderList, selLeaderList] = useState<ILeaderboardItem[]>();
+  const [getLeaderboard, { isLoading }] = useGetTeamLeaderboardMutation();
+
+  const getData = useCallback(async () => {
+    const res = await getLeaderboard({
+      ratingFieldName: 'score',
+      cursor: 0,
+      limit: 10,
+    }).unwrap();
+    selLeaderList(res.map((item) => item.data));
+  }, []);
+  useEffect(() => {
+    getData();
+  }, [getData]);
   return (
     <AuthPageLayout>
       <PageWrapper>
-        {list.map((item) => (
-          <LeaderboardCard {...item} key={item.place} />
-        ))}
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <>
+            {leaderList?.map((item, index) => (
+              <LeaderboardCard {...item} place={index + 1} key={index} />
+            ))}
+          </>
+        )}
       </PageWrapper>
     </AuthPageLayout>
   );
