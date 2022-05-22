@@ -1,6 +1,7 @@
 import { instanceApi } from '@api';
 import {
   IAddLeaderboardRequest,
+  ILeaderboardItem,
   TGetLeaderboardResponse,
   TGetTeamLeaderboardRequest,
 } from '@api/leaderboard/types';
@@ -16,13 +17,15 @@ export const leaderboardApi = instanceApi.injectEndpoints({
         body,
       }),
     }),
-    getTeamLeaderboard: builder.mutation<TGetLeaderboardResponse, TGetTeamLeaderboardRequest>({
+    getTeamLeaderboard: builder.query<ILeaderboardItem[], TGetTeamLeaderboardRequest>({
       query: (body) => ({
         url: `/leaderboard/${TEAM_NAME}`,
         method: 'POST',
         body,
       }),
+      transformResponse: (response: TGetLeaderboardResponse): ILeaderboardItem[] =>
+        response.map((item) => item.data),
     }),
   }),
 });
-export const { useAddToLeaderboardMutation, useGetTeamLeaderboardMutation } = leaderboardApi;
+export const { useAddToLeaderboardMutation, useGetTeamLeaderboardQuery } = leaderboardApi;

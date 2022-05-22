@@ -1,8 +1,7 @@
 import { AuthPageLayout } from '@layouts';
 import { LeaderboardCard } from '@components';
 import { styled, CircularProgress } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
-import { ILeaderboardItem, useGetTeamLeaderboardMutation } from '@api/leaderboard';
+import { useGetTeamLeaderboardQuery } from '@api/leaderboard';
 
 const PageWrapper = styled('div')`
   display: flex;
@@ -11,20 +10,11 @@ const PageWrapper = styled('div')`
 `;
 
 export const Leaderboard = () => {
-  const [leaderList, selLeaderList] = useState<ILeaderboardItem[]>();
-  const [getLeaderboard, { isLoading }] = useGetTeamLeaderboardMutation();
-
-  const getData = useCallback(async () => {
-    const res = await getLeaderboard({
-      ratingFieldName: 'score',
-      cursor: 0,
-      limit: 10,
-    }).unwrap();
-    selLeaderList(res.map((item) => item.data));
-  }, []);
-  useEffect(() => {
-    getData();
-  }, [getData]);
+  const { data: leaderList, isLoading } = useGetTeamLeaderboardQuery({
+    ratingFieldName: 'score',
+    cursor: 0,
+    limit: 10,
+  });
   return (
     <AuthPageLayout>
       <PageWrapper>
