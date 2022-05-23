@@ -1,6 +1,7 @@
 import { AuthPageLayout } from '@layouts';
 import { LeaderboardCard } from '@components';
-import { styled } from '@mui/material';
+import { styled, CircularProgress } from '@mui/material';
+import { useGetTeamLeaderboardQuery } from '@api/leaderboard';
 
 const PageWrapper = styled('div')`
   display: flex;
@@ -8,28 +9,24 @@ const PageWrapper = styled('div')`
   align-items: stretch;
 `;
 
-const list = [
-  {
-    place: 1,
-    imgUrl: '',
-    winCounter: 12,
-    userName: 'Сафохин Артем Анатольевич',
-  },
-  {
-    place: 2,
-    imgUrl: '',
-    winCounter: 10,
-    userName: 'Сафохин Артем',
-  },
-];
-
 export const Leaderboard = () => {
+  const { data: leaderList, isLoading } = useGetTeamLeaderboardQuery({
+    ratingFieldName: 'score',
+    cursor: 0,
+    limit: 10,
+  });
   return (
     <AuthPageLayout>
       <PageWrapper>
-        {list.map((item) => (
-          <LeaderboardCard {...item} key={item.place} />
-        ))}
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <>
+            {leaderList?.map((item, index) => (
+              <LeaderboardCard {...item} place={index + 1} key={index} />
+            ))}
+          </>
+        )}
       </PageWrapper>
     </AuthPageLayout>
   );
