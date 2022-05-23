@@ -10,12 +10,14 @@ import { CellType } from '@features/canvas/game-cell/types';
 import { randomPlacementShips } from '@features/gameSea/random-placement-ships';
 import { ILeaderboardItem, TEAM_NAME, useAddToLeaderboardMutation } from '@api/leaderboard';
 import { useGetUserQuery } from '@api/auth';
+import { useNotification } from '@features/use-notification';
 
 export type GameType = { board: BoardType | null; ships: ShipProps[] };
 export type CallbackBoardType = (board: BoardType, isMeBoard: boolean, cellType?: CellType) => void;
 export type CallbackShipsType = (ships: ShipProps[], isMeShips: boolean) => void;
 
 export const Game = () => {
+  const { createNotification } = useNotification();
   const [isMeStep, setIsMeStep] = useState<boolean>(true);
   const [myGame, setMyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для нашей игры
   const [enemyGame, setEnemyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для игры соперника
@@ -109,10 +111,12 @@ export const Game = () => {
 
     if (myWin && !isMyWin.current) {
       sendWinnerData();
-      alert('Вы победили');
+      createNotification('Вы победили');
       isMyWin.current = true;
     }
-    if (enemyWin) alert('Вы проиграли');
+    if (enemyWin) {
+      createNotification('Вы проиграли');
+    }
   }, [myGame, enemyGame]);
 
   return (
