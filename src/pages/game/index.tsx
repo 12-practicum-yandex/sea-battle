@@ -7,6 +7,7 @@ import { Header } from '@components';
 import { BoardsWrapper, GameWrapper } from '@pages/game/styles';
 import { Footer } from '@pages/game/Footer';
 import { CellType } from '@features/canvas/game-cell/types';
+import { useNotification } from '@features/use-notification';
 
 export type GameType = { board: BoardType | null; ships: ShipProps[] };
 export type CallbackBoardType = (board: BoardType, isMeBoard: boolean, cellType?: CellType) => void;
@@ -14,10 +15,10 @@ export type CallbackShipsType = (ships: ShipProps[], isMeShips: boolean) => void
 
 export const Game = () => {
   const [isMeStep, setIsMeStep] = useState<boolean>(true);
+  const { createNotification } = useNotification();
   const [myGame, setMyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для нашей игры
   const [enemyGame, setEnemyGame] = useState<GameType>({ board: null, ships: [] }); // Данные для игры соперника
   const [typeGame, setTypeGame] = useState<TypeGame | null>(null);
-
   // Возвращает матрицу после любых изменений (попадание по кораблю, расстановка кораблей и т.д.)
   const callbackBoard: CallbackBoardType = (board, isMeBoard, cellType) => {
     // Передача хода
@@ -72,8 +73,12 @@ export const Game = () => {
     const enemyWin = myGame.ships.filter((ship) => ship.hp === 0).length === 10;
     const myWin = enemyGame.ships.filter((ship) => ship.hp === 0).length === 10;
 
-    if (myWin) alert('Вы победили');
-    if (enemyWin) alert('Вы проиграли');
+    if (myWin) {
+      createNotification('Вы победили');
+    }
+    if (enemyWin) {
+      createNotification('Вы проиграли');
+    }
   }, [myGame, enemyGame]);
 
   return (
