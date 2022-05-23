@@ -33,6 +33,7 @@ export type GameProps = {
   callbackDeadShip: (deadShip: ShipProps) => void;
   typeGame: TypeGame | null;
   isMe: boolean;
+  isMeStep: boolean;
 };
 
 export interface IGame extends GameProps {

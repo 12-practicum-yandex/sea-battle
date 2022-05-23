@@ -71,22 +71,25 @@ export const drawMissAfterDead = ({
   for (let i = 0; i < cells.length; i++) {
     const cellsAround = checkCellAround({ board, cell: cells[i] });
 
-    cellsAroundShip = Object.values(cellsAround).filter(
+    const cellsAroundCell = Object.values(cellsAround).filter(
       (cell) => cell !== null && cell.type === CellType.empty,
     );
 
-    cellsAroundShip.forEach((cell) => {
+    cellsAroundCell.forEach((cell) => {
       if (cell !== null) {
         const { indexX, indexY } = cell;
+        cell.type = CellType.miss;
         redrawCell({ ctx, params: { indexX, indexY, type: CellType.miss } });
       }
     });
+
+    cellsAroundShip = cellsAroundShip.concat(cellsAroundCell);
   }
 
   return cellsAroundShip;
 };
 
-const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
+export const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
   const x = cell.indexX;
   const y = cell.indexY;
 
