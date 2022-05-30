@@ -14,7 +14,7 @@ export const useFullscreen = ({ element }: IParams): IReturn => {
   const toggleFullscreen = useCallback(() => {
     if (element) {
       if (isOpen) {
-        document.exitFullscreen();
+        document?.exitFullscreen();
       } else {
         element.requestFullscreen();
       }

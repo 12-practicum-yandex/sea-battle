@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from '@constants/routes';
 import {
@@ -16,7 +16,7 @@ import { RequireAuth, SkipAuth } from '@features/auth';
 
 export const Router = () => {
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route
           path={ROUTES.SIGN_IN}
@@ -99,6 +99,6 @@ export const Router = () => {
         />
         <Route path="*" element={<Page404 />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
