@@ -9,5 +9,9 @@ module.exports = {
     ],
     '@babel/preset-typescript',
   ],
-  plugins: [['@babel/transform-runtime']],
+  plugins: [
+    ['@babel/transform-runtime'],
+    ['@babel/plugin-proposal-decorators', { version: 'legacy' }],
+    '@babel/plugin-proposal-class-properties',
+  ],
 };

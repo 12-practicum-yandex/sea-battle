@@ -1,4 +1,5 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import { TopicCommentModel, TopicModel, UserModel } from '../models';
 
 const sequelizeOptions: SequelizeOptions = {
   host: process.env.POSTGRES_HOST,
@@ -7,6 +8,7 @@ const sequelizeOptions: SequelizeOptions = {
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
   dialect: 'postgres', // 'mysql', 'sqlite', 'mariadb', 'mssql'
+  models: [UserModel, TopicModel, TopicCommentModel],
 };
 
 // Создаем инстанс Sequelize

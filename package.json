@@ -24,6 +24,8 @@
   "homepage": "https://github.com/12-practicum-yandex/sea-battle#readme",
   "devDependencies": {
     "@babel/core": "^7.17.8",
+    "@babel/plugin-proposal-class-properties": "^7.17.12",
+    "@babel/plugin-proposal-decorators": "^7.18.2",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
