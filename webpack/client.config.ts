@@ -2,9 +2,24 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import webpack, { Configuration, Entry } from 'webpack';
+const { InjectManifest } = require('workbox-webpack-plugin');
 
-import { DIST_DIR, IS_DEV, SRC_DIR } from './env';
+import { DIST_DIR, IS_DEV, SRC_DIR, IS_PROD } from './env';
 import { cssLoader, fileLoader, jsLoader } from './loaders';
+
+const webpackPlugins = [
+  new MiniCssExtractPlugin({ filename: '[name].css' }),
+  new webpack.HotModuleReplacementPlugin(),
+];
+
+if (IS_PROD) {
+  webpackPlugins.push(
+    new InjectManifest({
+      swSrc: './src/src-sw.js',
+      swDest: 'sw.js',
+    }),
+  );
+}
 
 export const clientConfig: Configuration = {
   output: {
@@ -26,10 +41,7 @@ export const clientConfig: Configuration = {
     plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
     fallback: { url: false },
   },
-  plugins: [
-    new MiniCssExtractPlugin({ filename: '[name].css' }),
-    new webpack.HotModuleReplacementPlugin(),
-  ],
+  plugins: webpackPlugins,
   module: {
     rules: [jsLoader.client, cssLoader.client, fileLoader.client],
   },
