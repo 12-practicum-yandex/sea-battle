@@ -22,8 +22,10 @@ const addTopic = async (req: Request, res: Response) => {
 
 const getAll = async (req: Request, res: Response) => {
   try {
-    await TopicModel.findAll();
-    res.send('OK');
+    const data = await TopicModel.findAll();
+    res.send({
+      topics: data,
+    });
   } catch (error) {
     res.status(400).send();
   }
