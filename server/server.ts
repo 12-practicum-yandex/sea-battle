@@ -1,29 +1,24 @@
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import path from 'path';
-import webpack from 'webpack';
-import devMiddleware from 'webpack-dev-middleware';
-import hotMiddleware from 'webpack-hot-middleware';
 
 import { serverConfig } from '../webpack';
-import { serverRenderMiddleware } from './middlewares';
+import { dbConnect } from './init';
+import { serverRenderMiddleware, webpackMiddleware } from './middlewares';
 
-export const getWebpackMiddlewares = (config: webpack.Configuration): RequestHandler[] => {
-  const compiler = webpack({ ...config, mode: 'development' });
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return [
-    devMiddleware(compiler, {
-      publicPath: config.output!.publicPath!,
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    hotMiddleware(compiler, { path: `/__webpack_hmr` }),
-  ];
-};
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
-app.get('/*', [...getWebpackMiddlewares(serverConfig)], serverRenderMiddleware);
+app.get('/*', [...webpackMiddleware(serverConfig)], serverRenderMiddleware);
 
-export { app };
+const startApp = async () => {
+  await dbConnect();
+
+  app.listen(PORT, () => {
+    console.log(`Example app listening on port ${PORT}!`);
+  });
+};
+
+startApp();
