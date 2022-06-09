@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { initBoard } from './initBoard';
 import { ALL_SHIP, COUNT_CELL } from '@constants/game';
 import { BoardType, GameProps, ShipProps, TypeGame } from '@features/gameSea/types';
@@ -11,6 +11,7 @@ import { randomPlacementShips } from '@features/gameSea/random-placement-ships';
 import { ILeaderboardItem, TEAM_NAME, useAddToLeaderboardMutation } from '@api/leaderboard';
 import { useGetUserQuery } from '@api/auth';
 import { useNotification } from '@features/use-notification';
+import { fireAlgorithm } from '@features/gameSea/fire-algorithm';
 
 export type GameType = { board: BoardType | null; ships: ShipProps[] };
 export type CallbackBoardType = (board: BoardType, isMeBoard: boolean, cellType?: CellType) => void;
@@ -50,9 +51,17 @@ export const Game = () => {
 
   // Возвращает матрицу после любых изменений (попадание по кораблю, расстановка кораблей и т.д.)
   const callbackBoard: CallbackBoardType = (board, isMeBoard, cellType) => {
+    let isMeCurrentStep = isMeStep;
     // Передача хода
     if (cellType === CellType.miss) {
-      setIsMeStep((prev) => !prev);
+      // Если ход был мой и я промахнулся
+      if (isMeCurrentStep) {
+        const myGameUpdate = fireAlgorithm(myGame, deadShipHandler);
+        setMyGame(myGameUpdate);
+        isMeCurrentStep = !isMeCurrentStep;
+      }
+
+      setIsMeStep(!isMeCurrentStep);
     }
 
     if (isMeBoard) {

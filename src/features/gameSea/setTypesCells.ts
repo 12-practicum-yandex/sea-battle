@@ -62,7 +62,7 @@ export const drawMissAfterDead = ({
 }: {
   board: number[][];
   cells: CellProps[] | null;
-  ctx: CanvasRenderingContext2D | null;
+  ctx?: CanvasRenderingContext2D | null;
 }): CellProps[] => {
   if (ctx === null || cells === null) return [];
 
@@ -79,7 +79,10 @@ export const drawMissAfterDead = ({
       if (cell !== null) {
         const { indexX, indexY } = cell;
         cell.type = CellType.miss;
-        redrawCell({ ctx, params: { indexX, indexY, type: CellType.miss } });
+
+        if (ctx !== undefined) {
+          redrawCell({ ctx, params: { indexX, indexY, type: CellType.miss } });
+        }
       }
     });
 
@@ -93,6 +96,8 @@ export const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
   const x = cell.indexX;
   const y = cell.indexY;
 
+  const currentCell = getDataCell({ board, x, y });
+
   const bottomCell = getDataCell({ board, x, y: y + 1 });
   const topCell = getDataCell({ board, x, y: y - 1 });
   const rightCell = getDataCell({ board, x: x + 1, y: y });
@@ -104,6 +109,7 @@ export const checkCellAround: CheckCellAroundType = ({ board, cell }) => {
   const bottomRight = getDataCell({ board, x: x + 1, y: y + 1 });
 
   const allCells = {
+    currentCell,
     bottomCell,
     topCell,
     rightCell,
