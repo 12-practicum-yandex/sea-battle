@@ -1,2 +1,2 @@
-export { clientConfig } from './client.config';
-export { serverConfig } from './server.config';
+export { default as clientConfig } from './client.config';
+export { default as serverConfig } from './server.config';

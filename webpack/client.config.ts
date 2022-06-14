@@ -21,7 +21,8 @@ if (IS_PROD) {
   );
 }
 
-export const clientConfig: Configuration = {
+const clientConfig: Configuration = {
+  name: 'client',
   mode: (process.env.NODE_ENV as 'production' | 'development') || 'development',
   output: {
     path: DIST_DIR,
@@ -47,3 +48,5 @@ export const clientConfig: Configuration = {
     rules: [jsLoader.client, cssLoader.client, fileLoader.client],
   },
 };
+
+export default clientConfig;
