@@ -22,6 +22,7 @@ if (IS_PROD) {
 }
 
 export const clientConfig: Configuration = {
+  mode: (process.env.NODE_ENV as 'production' | 'development') || 'development',
   output: {
     path: DIST_DIR,
     filename: '[name].js',
@@ -29,7 +30,7 @@ export const clientConfig: Configuration = {
   },
   entry: [
     IS_DEV && 'react-hot-loader/patch',
-    IS_DEV && 'webpack-hot-middleware/client',
+    IS_DEV && 'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true&quiet=true',
     IS_DEV && 'css-hot-loader/hotModuleReplacement',
     path.join(SRC_DIR, 'index'),
   ].filter(Boolean) as Entry,
