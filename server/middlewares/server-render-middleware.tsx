@@ -6,7 +6,7 @@ import { StaticRouter } from 'react-router-dom/server';
 
 import { App } from '../../src/app';
 
-const getHtml = (reactHtml: string) => {
+const getHtml = (reactHtml: string, scriptPath: string) => {
   const helmet = Helmet.renderStatic();
   return `
   <!DOCTYPE html>
@@ -18,13 +18,17 @@ const getHtml = (reactHtml: string) => {
     </head>
     <body>
       <div id="root">${reactHtml}</div>
-      <script src="main.js"></script>
+      <script src="${scriptPath}"></script>
     </body>
   </html>
   `;
 };
 
 export const serverRenderMiddleware = (req: Request, res: Response) => {
+  const { devMiddleware } = res.locals.webpack;
+  const { assetsByChunkName } = devMiddleware.stats.toJson();
+  const script = assetsByChunkName.main[0];
+
   //TODO: add redux store
   const jsx = (
     <StaticRouter location={req.url}>
@@ -34,5 +38,5 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
 
   const reactHtml = renderToString(jsx);
 
-  res.status(200).send(getHtml(reactHtml));
+  res.status(200).send(getHtml(reactHtml, script));
 };

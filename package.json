@@ -10,6 +10,7 @@
     "start:webpack": "webpack --mode=development",
     "start:server": "wait-on -l file:dist/server.js && nodemon --watch dist/server.js dist/server.js",
     "start": "cross-env NODE_ENV=development npm-run-all --print-label start:*",
+    "serve": "concurrently \"webpack  --watch --config webpack/server.config.ts\" \"npm run start:server\"",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -41,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "babel-loader": "^8.2.4",
+    "concurrently": "^7.2.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "dotenv": "^16.0.1",
