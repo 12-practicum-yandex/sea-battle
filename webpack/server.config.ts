@@ -6,11 +6,13 @@ import nodeExternals from 'webpack-node-externals';
 import { DIST_DIR, IS_DEV, SERVER_DIR } from './env';
 import { cssLoader, fileLoader, jsLoader } from './loaders';
 
-export const serverConfig: Configuration = {
+const serverConfig: Configuration = {
   name: 'server',
   target: 'node',
+  mode: (process.env.NODE_ENV as 'production' | 'development') || 'development',
   node: { __dirname: false },
   entry: path.join(SERVER_DIR, 'server'),
+  dependencies: ['client'],
   module: {
     rules: [fileLoader.server, cssLoader.server, jsLoader.server],
   },
@@ -33,3 +35,5 @@ export const serverConfig: Configuration = {
   externals: [nodeExternals({ allowlist: [/\.(?!(?:tsx?|json)$).{1,5}$/i] })],
   optimization: { nodeEnv: false },
 };
+
+export default serverConfig;
