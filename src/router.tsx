@@ -76,6 +76,14 @@ export const Router = () => {
           }
         />
         <Route
+          path={ROUTES.FORUM_TOPIC}
+          element={
+            <RequireAuth>
+              <ForumPage />
+            </RequireAuth>
+          }
+        />
+        <Route
           path={'/'}
           element={
             <div>

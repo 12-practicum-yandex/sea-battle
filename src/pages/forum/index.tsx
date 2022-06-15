@@ -1,8 +1,10 @@
 import { AuthPageLayout } from '@layouts';
-import { Typography, Button, styled } from '@mui/material';
+import { Typography, Button, styled, CircularProgress } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import { ForumCategoryCard } from '@components/forum-category-card';
+import { useGetTopicsQuery } from '@api/forum';
+import { ROUTES } from '@constants/routes';
 
 const PageWrapper = styled('div')`
   color: #1e1e1e;
@@ -15,30 +17,30 @@ const Top = styled('div')`
 `;
 
 export const ForumPage = () => {
+  const { data, isLoading } = useGetTopicsQuery({});
+
   return (
     <AuthPageLayout>
       <PageWrapper>
         <Top>
-          <Typography variant={'h4'}>Категории</Typography>
+          <Typography variant={'h4'}>Категории1</Typography>
           <Button variant="outlined">
             <AddIcon />
             Добавить
           </Button>
         </Top>
-        <ForumCategoryCard
-          title="Новые игры"
-          textPreview="Lorem ipsum dolor sit amыet, consectetur adipisicing elit."
-          themCounter={153}
-          answerCounter={123}
-          lastTheme="Название темы"
-        />
-        <ForumCategoryCard
-          title="Новинки консолей"
-          textPreview="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto autem ducimus libero natus nesciunt quis suscipit! Iure minus sunt ut!"
-          themCounter={53}
-          answerCounter={23}
-          lastTheme="PSP"
-        />
+        {isLoading && <CircularProgress />}
+        {data?.map(({ title, description, id }) => (
+          <ForumCategoryCard
+            title={title}
+            textPreview={description}
+            themCounter={153}
+            answerCounter={123}
+            lastTheme="Название темы"
+            to={`${ROUTES.FORUM_TOPIC}/${id}`}
+            key={id}
+          />
+        ))}
       </PageWrapper>
     </AuthPageLayout>
   );
