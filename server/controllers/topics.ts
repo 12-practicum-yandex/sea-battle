@@ -1,12 +1,22 @@
 import { Router, Request, Response } from 'express';
-import { TopicModel } from '../models';
+import { TopicModel, UserModel } from '../models';
 
 export const topicsRouter = Router();
 
 const addTopic = async (req: Request, res: Response) => {
   try {
     const { body } = req;
-    const { title, description, userId } = body;
+    const { title, description, userId, userLogin } = body;
+
+    await UserModel.findOrCreate({
+      where: {
+        id: userId,
+      },
+      defaults: {
+        id: userId,
+        login: userLogin,
+      },
+    });
 
     await TopicModel.create({
       title,
@@ -16,6 +26,8 @@ const addTopic = async (req: Request, res: Response) => {
 
     res.send('OK');
   } catch (error) {
+    console.log(error);
+
     res.status(400).send();
   }
 };
@@ -32,4 +44,4 @@ const getAll = async (req: Request, res: Response) => {
 };
 
 topicsRouter.route('/add').post(addTopic);
-topicsRouter.route('/all').post(getAll);
+topicsRouter.route('/all').get(getAll);
