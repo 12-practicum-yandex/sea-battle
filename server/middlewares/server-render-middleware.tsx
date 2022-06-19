@@ -5,8 +5,10 @@ import { Helmet } from 'react-helmet';
 import { StaticRouter } from 'react-router-dom/server';
 
 import { App } from '../../src/app';
+import { Provider } from 'react-redux';
+import { create } from '../../src/store';
 
-const getHtml = (reactHtml: string, scriptPath: string) => {
+const getHtml = (reactHtml: string, scriptPath: string, preloadedState: string) => {
   const helmet = Helmet.renderStatic();
   return `
   <!DOCTYPE html>
@@ -17,6 +19,7 @@ const getHtml = (reactHtml: string, scriptPath: string) => {
       ${helmet.link.toString()}
     </head>
     <body>
+      <script>window.__PRELOADED_STATE__=${preloadedState}</script>
       <div id="root">${reactHtml}</div>
       <script src="${scriptPath}"></script>
     </body>
@@ -29,14 +32,22 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
   const { assetsByChunkName } = devMiddleware.stats.toJson();
   const script = assetsByChunkName.main[0];
 
-  //TODO: add redux store
+  const store = create({
+    serverData: {
+      user: 'Artem',
+    },
+  });
+
   const jsx = (
     <StaticRouter location={req.url}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </StaticRouter>
   );
 
+  const preloadedState = JSON.stringify(store.getState()).replace(/</g, '\\u003c');
   const reactHtml = renderToString(jsx);
 
-  res.status(200).send(getHtml(reactHtml, script));
+  res.status(200).send(getHtml(reactHtml, script, preloadedState));
 };
