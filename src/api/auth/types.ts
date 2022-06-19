@@ -26,3 +26,16 @@ export type TGetUserResponse = {
   phone: string;
   avatar: string;
 };
+
+export type TGetServiceRequest = {
+  redirect_uri: string;
+};
+
+export type TGetServiceResponse = {
+  service_id: string;
+};
+
+export type TOAuthRequest = {
+  code: string;
+  redirect_uri: string;
+};

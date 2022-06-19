@@ -1,5 +1,13 @@
-import { instanceApi } from '../instance-api';
-import { TGetUserResponse, TSignInRequest, TSignUpRequest, TSignUpResponse } from './types';
+import { instanceApi } from '@api';
+import {
+  TGetServiceRequest,
+  TGetServiceResponse,
+  TGetUserResponse,
+  TOAuthRequest,
+  TSignInRequest,
+  TSignUpRequest,
+  TSignUpResponse,
+} from './types';
 
 export const authApi = instanceApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -30,8 +38,29 @@ export const authApi = instanceApi.injectEndpoints({
       }),
       providesTags: () => [{ type: 'user' }],
     }),
+    getService: builder.query<TGetServiceResponse, TGetServiceRequest>({
+      query: (params) => ({
+        url: '/oauth/yandex/service-id',
+        method: 'GET',
+        params,
+      }),
+    }),
+    oAuthSignIn: builder.mutation<void, TOAuthRequest>({
+      query: (body) => ({
+        url: '/oauth/yandex',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useSignUpMutation, useSignInMutation, useLogoutMutation, useGetUserQuery } = authApi;
+export const {
+  useSignUpMutation,
+  useSignInMutation,
+  useLogoutMutation,
+  useGetUserQuery,
+  useGetServiceQuery,
+  useOAuthSignInMutation,
+} = authApi;
