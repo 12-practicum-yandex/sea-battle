@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from '@constants/routes';
 import {
@@ -11,6 +11,7 @@ import {
   Page500,
   Game,
   ForumPage,
+  Default,
 } from '@pages';
 import { RequireAuth, SkipAuth } from '@features/auth';
 
@@ -75,28 +76,7 @@ export const Router = () => {
             </RequireAuth>
           }
         />
-        <Route
-          path={'/'}
-          element={
-            <div>
-              <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-              <br />
-              <Link to={ROUTES.SIGN_UP}>Sign UP</Link>
-              <br />
-              <Link to={ROUTES.SERVER_ERROR}>Server Error</Link>
-              <br />
-              <Link to={ROUTES.INIT_GAME}>Init game</Link>
-              <br />
-              <Link to={ROUTES.GAME}>Game</Link>
-              <br />
-              <Link to={ROUTES.PROFILE}>Profile</Link>
-              <br />
-              <Link to={ROUTES.LEADERBOARD}>leaderboard</Link>
-              <br />
-              <Link to={ROUTES.FORUM}>forum</Link>
-            </div>
-          }
-        />
+        <Route path={'/'} element={<Default />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </>
