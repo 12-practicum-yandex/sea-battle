@@ -8,7 +8,9 @@ import { App } from '../../src/app';
 import { Provider } from 'react-redux';
 import { create } from '../../src/store';
 
-const getHtml = (reactHtml: string, scriptPath: string, preloadedState: string) => {
+type GetHtmlProps = { reactHtml: string; scriptPath: string; preloadedState: string };
+
+const getHtml = ({ reactHtml, scriptPath, preloadedState }: GetHtmlProps) => {
   const helmet = Helmet.renderStatic();
   return `
   <!DOCTYPE html>
@@ -30,13 +32,9 @@ const getHtml = (reactHtml: string, scriptPath: string, preloadedState: string) 
 export const serverRenderMiddleware = (req: Request, res: Response) => {
   const { devMiddleware } = res.locals.webpack;
   const { assetsByChunkName } = devMiddleware.stats.toJson();
-  const script = assetsByChunkName.main[0];
+  const scriptPath = assetsByChunkName.main[0];
 
-  const store = create({
-    serverData: {
-      user: 'Artem',
-    },
-  });
+  const store = create({});
 
   const jsx = (
     <StaticRouter location={req.url}>
@@ -49,5 +47,5 @@ export const serverRenderMiddleware = (req: Request, res: Response) => {
   const preloadedState = JSON.stringify(store.getState()).replace(/</g, '\\u003c');
   const reactHtml = renderToString(jsx);
 
-  res.status(200).send(getHtml(reactHtml, script, preloadedState));
+  res.status(200).send(getHtml({ reactHtml, scriptPath, preloadedState }));
 };
