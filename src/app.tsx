@@ -1,4 +1,3 @@
-import { Provider } from 'react-redux';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader/root';
@@ -8,7 +7,6 @@ import { AuthProvider } from '@features/auth';
 import { SnakesProvider } from '@features/snakes';
 
 import { Router } from './router';
-import { store } from './store';
 
 const inputGlobalStyles = (
   <GlobalStyles
@@ -37,13 +35,11 @@ export const App = hot(() => (
     </Helmet>
     <ErrorBoundary>
       {inputGlobalStyles}
-      <Provider store={store}>
-        <SnakesProvider>
-          <AuthProvider>
-            <Router />
-          </AuthProvider>
-        </SnakesProvider>
-      </Provider>
+      <SnakesProvider>
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
+      </SnakesProvider>
     </ErrorBoundary>
   </>
 ));
