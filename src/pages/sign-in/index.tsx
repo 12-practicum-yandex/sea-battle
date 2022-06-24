@@ -22,7 +22,7 @@ export const SignIn = () => {
   const onSubmit = async (values: TSignInFormValues) => {
     await signInMutation(values);
     setAuth(true);
-    navigate(ROUTES.INIT_GAME);
+    navigate(ROUTES.GAME);
   };
 
   return (

@@ -8,4 +8,5 @@ export const ROUTES = {
   LEADERBOARD: '/leaderboard',
   FORUM: '/forum',
   FORUM_TOPIC: '/forum/:id',
+  OAUTH: '/oauth',
 };

@@ -4,7 +4,6 @@ import { ROUTES } from '@constants/routes';
 import {
   SignUpPage,
   SignIn,
-  InitGame,
   Leaderboard,
   ProfilePage,
   Page404,
@@ -36,14 +35,6 @@ export const Router = () => {
           }
         />
         <Route path={ROUTES.SERVER_ERROR} element={<Page500 />} />
-        <Route
-          path={ROUTES.INIT_GAME}
-          element={
-            <RequireAuth>
-              <InitGame />
-            </RequireAuth>
-          }
-        />
         <Route
           path={ROUTES.GAME}
           element={
@@ -84,7 +75,23 @@ export const Router = () => {
             </RequireAuth>
           }
         />
-        <Route path={'/'} element={<Default />} />
+        <Route
+          path={ROUTES.OAUTH}
+          element={
+            <SkipAuth>
+              <Default />
+            </SkipAuth>
+          }
+        />
+        <Route
+          path={''}
+          element={
+            <SkipAuth>
+              <SignIn />
+            </SkipAuth>
+          }
+        />
+
         <Route path="*" element={<Page404 />} />
       </Routes>
     </>

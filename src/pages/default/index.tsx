@@ -30,5 +30,5 @@ export const Default = () => {
     }
   }, []);
 
-  return <>Default</>;
+  return <></>;
 };

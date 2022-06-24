@@ -3,7 +3,7 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { Topic } from './types';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://localhost:5432',
+  baseUrl: 'https://localhost:5000',
   credentials: 'include',
 });
 
