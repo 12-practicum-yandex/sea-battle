@@ -4,13 +4,14 @@ import 'dotenv/config';
 
 import { clientConfig } from '../webpack';
 import { dbConnect } from './init';
-import { serverRenderMiddleware, webpackMiddleware } from './middlewares';
+import { serverRenderMiddleware, webpackMiddleware, cspMiddleware } from './middlewares';
 import { topicsRouter } from './controllers';
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
+app.use(cspMiddleware());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
