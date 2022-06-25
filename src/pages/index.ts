@@ -7,4 +7,4 @@ export { ProfilePage } from './profile';
 export { Page404 } from './404';
 export { Page500 } from './500';
 export { ForumPage } from './forum';
-export { Default } from './default';
+export { CreateTopicPage } from './creat-topic';

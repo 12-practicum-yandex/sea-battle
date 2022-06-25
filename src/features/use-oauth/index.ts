@@ -1,11 +1,11 @@
-import { useOAuthSignInMutation, useGetUserQuery } from '@api/auth';
+import { useGetUserQuery, useOAuthSignInMutation } from '@api/auth';
+import { useAuth } from '@features/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { parse } from 'qs';
 import { ROUTES } from '@constants/routes';
-import { useAuth } from '@features/auth';
 
-export const Default = () => {
+export const useOauth = () => {
   const [oauthMutation] = useOAuthSignInMutation();
   const { refetch } = useGetUserQuery();
   const { setAuth } = useAuth();
@@ -29,6 +29,4 @@ export const Default = () => {
       })();
     }
   }, []);
-
-  return <></>;
 };

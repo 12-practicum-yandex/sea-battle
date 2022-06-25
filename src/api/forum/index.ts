@@ -1,27 +1,37 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
-import { Topic } from './types';
+import { CreateTopic, Topic } from './types';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://localhost:5000',
+  baseUrl: '/api',
   credentials: 'include',
 });
 
-export const instanceApi = createApi({
-  reducerPath: '/',
+export const instanceApiForum = createApi({
+  reducerPath: 'forum',
   baseQuery,
   endpoints: () => ({}),
-  tagTypes: ['user'],
 });
 
-export const forumApi = instanceApi.injectEndpoints({
+export const forumApi = instanceApiForum.injectEndpoints({
   endpoints: (builder) => ({
-    getTopics: builder.query<Topic[], any>({
+    getTopics: builder.query<Topic[], void>({
       query: () => ({
-        url: '/api/topics/all',
+        url: '/topics/all',
+        method: 'GET',
+      }),
+      transformResponse(baseQueryReturnValue: { topics: Topic[] }) {
+        return baseQueryReturnValue?.topics;
+      },
+    }),
+    createTopic: builder.mutation<string, CreateTopic>({
+      query: (body) => ({
+        url: '/topics/add',
+        method: 'POST',
+        body,
       }),
     }),
   }),
 });
 
-export const { useGetTopicsQuery } = forumApi;
+export const { useGetTopicsQuery, useCreateTopicMutation } = forumApi;

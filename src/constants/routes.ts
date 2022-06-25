@@ -7,6 +7,6 @@ export const ROUTES = {
   PROFILE: '/profile',
   LEADERBOARD: '/leaderboard',
   FORUM: '/forum',
+  TOPIC_CREATE: '/forum/create',
   FORUM_TOPIC: '/forum/:id',
-  OAUTH: '/oauth',
 };

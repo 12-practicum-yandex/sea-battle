@@ -4,3 +4,10 @@ export type Topic = {
   description?: string;
   id: number;
 };
+
+export type CreateTopic = {
+  title: string;
+  description: string;
+  userId?: number;
+  userLogin?: string;
+};

@@ -1,5 +1,4 @@
 import { FC, memo } from 'react';
-import { Link } from 'react-router-dom';
 import { Card as CardBase, styled, Typography } from '@mui/material';
 
 interface IProps {
@@ -8,7 +7,6 @@ interface IProps {
   themCounter?: number;
   answerCounter?: number;
   lastTheme?: string;
-  to: string;
 }
 
 const Card = styled(CardBase)`
@@ -60,40 +58,38 @@ const CountContainer = styled('div')`
 `;
 
 export const ForumCategoryCard: FC<IProps> = memo(
-  ({ title, textPreview, themCounter, answerCounter, lastTheme, to }: IProps) => {
+  ({ title, textPreview, themCounter, answerCounter, lastTheme }: IProps) => {
     return (
-      <Link to={to}>
-        <Card>
-          <Left>
-            <Title>{title}</Title>
-            {textPreview && <TextPreview>{textPreview}</TextPreview>}
-          </Left>
-          <Right>
-            <RightTop>
-              {themCounter && (
-                <>
-                  <Typography sx={{ marginRight: 2 }}>Темы:</Typography>
-                  <CountContainer sx={{ marginRight: 5 }}>{themCounter}</CountContainer>
-                </>
-              )}
-              {answerCounter && (
-                <>
-                  <Typography sx={{ marginRight: 2 }}>Ответы:</Typography>
-                  <CountContainer>{answerCounter}</CountContainer>
-                </>
-              )}
-            </RightTop>
-            <RightBottom>
-              {lastTheme && (
-                <>
-                  <Typography sx={{ marginRight: 2 }}>Последняя тема:</Typography>
-                  <TextPreview>{lastTheme}</TextPreview>
-                </>
-              )}
-            </RightBottom>
-          </Right>
-        </Card>
-      </Link>
+      <Card>
+        <Left>
+          <Title>{title}</Title>
+          {textPreview && <TextPreview>{textPreview}</TextPreview>}
+        </Left>
+        <Right>
+          <RightTop>
+            {themCounter && (
+              <>
+                <Typography sx={{ marginRight: 2 }}>Темы:</Typography>
+                <CountContainer sx={{ marginRight: 5 }}>{themCounter}</CountContainer>
+              </>
+            )}
+            {answerCounter && (
+              <>
+                <Typography sx={{ marginRight: 2 }}>Ответы:</Typography>
+                <CountContainer>{answerCounter}</CountContainer>
+              </>
+            )}
+          </RightTop>
+          <RightBottom>
+            {lastTheme && (
+              <>
+                <Typography sx={{ marginRight: 2 }}>Последняя тема:</Typography>
+                <TextPreview>{lastTheme}</TextPreview>
+              </>
+            )}
+          </RightBottom>
+        </Right>
+      </Card>
     );
   },
 );

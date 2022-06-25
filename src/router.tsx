@@ -10,7 +10,7 @@ import {
   Page500,
   Game,
   ForumPage,
-  Default,
+  CreateTopicPage,
 } from '@pages';
 import { RequireAuth, SkipAuth } from '@features/auth';
 
@@ -68,19 +68,19 @@ export const Router = () => {
           }
         />
         <Route
+          path={ROUTES.TOPIC_CREATE}
+          element={
+            <RequireAuth>
+              <CreateTopicPage />
+            </RequireAuth>
+          }
+        />
+        <Route
           path={ROUTES.FORUM_TOPIC}
           element={
             <RequireAuth>
               <ForumPage />
             </RequireAuth>
-          }
-        />
-        <Route
-          path={ROUTES.OAUTH}
-          element={
-            <SkipAuth>
-              <Default />
-            </SkipAuth>
           }
         />
         <Route

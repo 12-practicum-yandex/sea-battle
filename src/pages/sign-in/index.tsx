@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@features/auth';
 import { useMemo } from 'react';
+import { useOauth } from '@features/use-oauth';
 
 export const SignIn = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
-
+  useOauth();
   const [signInMutation, { isLoading: isSignInMutationLoading }] = useSignInMutation();
   const { data } = useGetServiceQuery({
     redirect_uri: global?.location?.origin,
