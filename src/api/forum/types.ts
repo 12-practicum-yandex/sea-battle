@@ -11,3 +11,12 @@ export type CreateTopic = {
   userId?: number;
   userLogin?: string;
 };
+
+export type Comment = {
+  id: number;
+  parentId: number | null;
+  comment: string;
+  topic_id: number;
+  user_id: number;
+  user_login: string;
+};

@@ -45,7 +45,7 @@ export const ForumPage = () => {
         ) : (
           <>
             {data?.map(({ title, description, id }) => (
-              <Link to={`${ROUTES.FORUM_TOPIC}/${id}`} key={id}>
+              <Link to={ROUTES.FORUM_TOPIC(id)} key={id}>
                 <ForumCategoryCard title={title} textPreview={description} />
               </Link>
             ))}

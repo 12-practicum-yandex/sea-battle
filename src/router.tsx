@@ -11,6 +11,7 @@ import {
   Game,
   ForumPage,
   CreateTopicPage,
+  TopicPage,
 } from '@pages';
 import { RequireAuth, SkipAuth } from '@features/auth';
 
@@ -68,18 +69,18 @@ export const Router = () => {
           }
         />
         <Route
-          path={ROUTES.TOPIC_CREATE}
+          path={ROUTES.FORUM_TOPIC(':id')}
           element={
             <RequireAuth>
-              <CreateTopicPage />
+              <TopicPage />
             </RequireAuth>
           }
         />
         <Route
-          path={ROUTES.FORUM_TOPIC}
+          path={ROUTES.TOPIC_CREATE}
           element={
             <RequireAuth>
-              <ForumPage />
+              <CreateTopicPage />
             </RequireAuth>
           }
         />

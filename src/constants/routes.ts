@@ -8,5 +8,5 @@ export const ROUTES = {
   LEADERBOARD: '/leaderboard',
   FORUM: '/forum',
   TOPIC_CREATE: '/forum/create',
-  FORUM_TOPIC: '/forum/:id',
+  FORUM_TOPIC: (id: string | number) => `/forum/${id}`,
 };
