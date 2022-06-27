@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import { clientConfig } from '../webpack';
 import { dbConnect } from './init';
 import { serverRenderMiddleware, webpackMiddleware, cspMiddleware } from './middlewares';
-import { authRouter, topicsRouter } from './controllers';
+import { authRouter, leaderBoardRouter, topicsRouter } from './controllers';
 
 const { PORT = 3000 } = process.env;
 
@@ -19,6 +19,7 @@ app.use(express.static(path.resolve(__dirname, '../dist')));
 
 app.use('/api/auth', authRouter);
 app.use('/api/topics', topicsRouter);
+app.use('/api/leaderboard', leaderBoardRouter);
 
 app.get('/*', [...webpackMiddleware(clientConfig)], serverRenderMiddleware);
 
