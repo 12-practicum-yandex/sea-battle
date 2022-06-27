@@ -1,4 +1,3 @@
-import { instanceApi } from '@api';
 import {
   TGetServiceRequest,
   TGetServiceResponse,
@@ -8,19 +7,20 @@ import {
   TSignUpRequest,
   TSignUpResponse,
 } from './types';
+import { bffApi } from '../bff-api';
 
-export const authApi = instanceApi.injectEndpoints({
+export const authApi = bffApi.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation<string, TSignInRequest>({
       query: (body) => ({
-        url: '/auth/signin',
+        url: '/auth/sign-in',
         method: 'POST',
         body,
       }),
     }),
     signUp: builder.mutation<TSignUpResponse, TSignUpRequest>({
       query: (body) => ({
-        url: '/auth/signup',
+        url: '/auth/sign-up',
         method: 'POST',
         body,
       }),

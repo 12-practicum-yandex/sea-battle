@@ -5,13 +5,8 @@ import cookieParser from 'cookie-parser';
 
 import { clientConfig } from '../webpack';
 import { dbConnect } from './init';
-import {
-  serverRenderMiddleware,
-  webpackMiddleware,
-  cspMiddleware,
-  authMiddleware,
-} from './middlewares';
-import { topicsRouter } from './controllers';
+import { serverRenderMiddleware, webpackMiddleware, cspMiddleware } from './middlewares';
+import { authRouter, topicsRouter } from './controllers';
 
 const { PORT = 3000 } = process.env;
 
@@ -22,9 +17,10 @@ app.use(cspMiddleware());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
+app.use('/api/auth', authRouter);
 app.use('/api/topics', topicsRouter);
 
-app.get('/*', [...webpackMiddleware(clientConfig)], authMiddleware, serverRenderMiddleware);
+app.get('/*', [...webpackMiddleware(clientConfig)], serverRenderMiddleware);
 
 const startApp = async () => {
   await dbConnect();
