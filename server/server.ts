@@ -5,7 +5,12 @@ import cookieParser from 'cookie-parser';
 
 import { clientConfig } from '../webpack';
 import { dbConnect } from './init';
-import { serverRenderMiddleware, webpackMiddleware, authMiddleware } from './middlewares';
+import {
+  serverRenderMiddleware,
+  webpackMiddleware,
+  cspMiddleware,
+  authMiddleware,
+} from './middlewares';
 import { topicsRouter } from './controllers';
 
 const { PORT = 3000 } = process.env;
@@ -13,6 +18,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(cookieParser());
+app.use(cspMiddleware());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../dist')));
 

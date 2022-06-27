@@ -1,8 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { instanceApi } from '@api';
+import { instanceApi, instanceApiForum } from '@api';
 
 const rootReducer = combineReducers({
   [instanceApi.reducerPath]: instanceApi.reducer,
+  [instanceApiForum.reducerPath]: instanceApiForum.reducer,
 });
 
 export function create(preloadedState: any) {

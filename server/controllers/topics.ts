@@ -89,7 +89,8 @@ const deleteComment = async (req: Request, res: Response) => {
 
 const getComment = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { body } = req;
+    const { id } = body;
 
     const data = await TopicCommentModel.findAll({
       where: {
@@ -109,4 +110,4 @@ topicsRouter.route('/add').post(addTopic);
 topicsRouter.route('/all').get(getAll);
 topicsRouter.route('/add-comment').post(createComment);
 topicsRouter.route('/delete-comment').delete(deleteComment);
-topicsRouter.route('/get-comments').get(getComment);
+topicsRouter.route('/get-comments').post(getComment);

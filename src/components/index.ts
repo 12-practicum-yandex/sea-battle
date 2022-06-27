@@ -5,3 +5,5 @@ export { SignInForm } from './sign-in-form';
 export { LeaderboardCard } from './leaderboard-card';
 export { Header } from './header';
 export { FullscreenButton } from './fullscreen-button';
+export { Comment } from './comment';
+export { CommentForm } from './comment-form';
