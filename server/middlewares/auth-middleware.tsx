@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { baseUrl } from '@constants/base-url';
 import { UserModel } from '../models';
 
+// WIP
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const { cookies, signedCookies } = req;
 
