@@ -4,14 +4,14 @@ import { ROUTES } from '@constants/routes';
 import {
   SignUpPage,
   SignIn,
-  InitGame,
   Leaderboard,
   ProfilePage,
   Page404,
   Page500,
   Game,
   ForumPage,
-  Default,
+  CreateTopicPage,
+  TopicPage,
 } from '@pages';
 import { RequireAuth, SkipAuth } from '@features/auth';
 
@@ -36,14 +36,6 @@ export const Router = () => {
           }
         />
         <Route path={ROUTES.SERVER_ERROR} element={<Page500 />} />
-        <Route
-          path={ROUTES.INIT_GAME}
-          element={
-            <RequireAuth>
-              <InitGame />
-            </RequireAuth>
-          }
-        />
         <Route
           path={ROUTES.GAME}
           element={
@@ -76,7 +68,31 @@ export const Router = () => {
             </RequireAuth>
           }
         />
-        <Route path={'/'} element={<Default />} />
+        <Route
+          path={ROUTES.FORUM_TOPIC(':id')}
+          element={
+            <RequireAuth>
+              <TopicPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={ROUTES.TOPIC_CREATE}
+          element={
+            <RequireAuth>
+              <CreateTopicPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={''}
+          element={
+            <SkipAuth>
+              <SignIn />
+            </SkipAuth>
+          }
+        />
+
         <Route path="*" element={<Page404 />} />
       </Routes>
     </>

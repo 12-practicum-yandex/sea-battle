@@ -3,10 +3,10 @@ import { Card as CardBase, styled, Typography } from '@mui/material';
 
 interface IProps {
   title: string;
-  textPreview: string;
-  themCounter: number;
-  answerCounter: number;
-  lastTheme: string;
+  textPreview?: string;
+  themCounter?: number;
+  answerCounter?: number;
+  lastTheme?: string;
 }
 
 const Card = styled(CardBase)`
@@ -63,18 +63,30 @@ export const ForumCategoryCard: FC<IProps> = memo(
       <Card>
         <Left>
           <Title>{title}</Title>
-          <TextPreview>{textPreview}</TextPreview>
+          {textPreview && <TextPreview>{textPreview}</TextPreview>}
         </Left>
         <Right>
           <RightTop>
-            <Typography sx={{ marginRight: 2 }}>Темы:</Typography>
-            <CountContainer sx={{ marginRight: 5 }}>{themCounter}</CountContainer>
-            <Typography sx={{ marginRight: 2 }}>Ответы:</Typography>
-            <CountContainer>{answerCounter}</CountContainer>
+            {themCounter && (
+              <>
+                <Typography sx={{ marginRight: 2 }}>Темы:</Typography>
+                <CountContainer sx={{ marginRight: 5 }}>{themCounter}</CountContainer>
+              </>
+            )}
+            {answerCounter && (
+              <>
+                <Typography sx={{ marginRight: 2 }}>Ответы:</Typography>
+                <CountContainer>{answerCounter}</CountContainer>
+              </>
+            )}
           </RightTop>
           <RightBottom>
-            <Typography sx={{ marginRight: 2 }}>Последняя тема:</Typography>
-            <TextPreview>{lastTheme}</TextPreview>
+            {lastTheme && (
+              <>
+                <Typography sx={{ marginRight: 2 }}>Последняя тема:</Typography>
+                <TextPreview>{lastTheme}</TextPreview>
+              </>
+            )}
           </RightBottom>
         </Right>
       </Card>

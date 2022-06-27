@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 import { useAuth } from '@features/auth';
 import { useMemo } from 'react';
+import { useOauth } from '@features/use-oauth';
 
 export const SignIn = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
-
+  useOauth();
   const [signInMutation, { isLoading: isSignInMutationLoading }] = useSignInMutation();
   const { data } = useGetServiceQuery({
     redirect_uri: global?.location?.origin,
@@ -22,7 +23,7 @@ export const SignIn = () => {
   const onSubmit = async (values: TSignInFormValues) => {
     await signInMutation(values);
     setAuth(true);
-    navigate(ROUTES.INIT_GAME);
+    navigate(ROUTES.GAME);
   };
 
   return (
