@@ -1,19 +1,19 @@
-import { instanceApi } from '@api';
+import { bffApi } from '@api';
 import { TUserUpdateRequest } from './types';
 import { TGetUserResponse } from '@api/auth/types';
 
-export const profileApi = instanceApi.injectEndpoints({
+export const profileApi = bffApi.injectEndpoints({
   endpoints: (builder) => ({
     updateProfile: builder.mutation<TGetUserResponse, TUserUpdateRequest>({
       query: (body) => ({
-        url: '/user/profile',
+        url: '/profile',
         method: 'PUT',
         body,
       }),
     }),
     updateAvatar: builder.mutation<TGetUserResponse, FormData>({
       query: (body) => ({
-        url: '/user/profile/avatar',
+        url: '/profile/avatar',
         method: 'PUT',
         body,
       }),

@@ -1,4 +1,4 @@
-import { instanceApi } from '@api';
+import { bffApi } from '@api';
 import {
   IAddLeaderboardRequest,
   ILeaderboardItem,
@@ -8,18 +8,18 @@ import {
 
 export const TEAM_NAME = 'atlantida';
 
-export const leaderboardApi = instanceApi.injectEndpoints({
+export const leaderboardApi = bffApi.injectEndpoints({
   endpoints: (builder) => ({
     addToLeaderboard: builder.mutation<string, IAddLeaderboardRequest>({
       query: (body) => ({
-        url: '/leaderboard',
+        url: '/leaderboard/add',
         method: 'POST',
         body,
       }),
     }),
     getTeamLeaderboard: builder.query<ILeaderboardItem[], TGetTeamLeaderboardRequest>({
       query: (body) => ({
-        url: `/leaderboard/${TEAM_NAME}`,
+        url: `/leaderboard/all`,
         method: 'POST',
         body,
       }),

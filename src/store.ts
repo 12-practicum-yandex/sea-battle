@@ -1,15 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { instanceApi, instanceApiForum } from '@api';
+import { bffApi } from '@api';
 
 const rootReducer = combineReducers({
-  [instanceApi.reducerPath]: instanceApi.reducer,
-  [instanceApiForum.reducerPath]: instanceApiForum.reducer,
+  [bffApi.reducerPath]: bffApi.reducer,
 });
 
 export function create(preloadedState: any) {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(instanceApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(bffApi.middleware),
     preloadedState,
   });
 }
