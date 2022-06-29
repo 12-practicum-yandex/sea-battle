@@ -47,7 +47,8 @@ export const App = hot(() => {
     (async () => {
       // Если еще не занесены в БД темы, то создаем
       if (Array.isArray(allThemes) && allThemes.length === 0) {
-        await createThemeMutation({ theme: ['blue', 'dark'] });
+        await createThemeMutation({ theme: 'blue' });
+        await createThemeMutation({ theme: 'dark' });
       }
       // Если занесены в БД темы
       if (Array.isArray(allThemes) && allThemes.length !== 0) {
