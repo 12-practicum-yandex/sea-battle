@@ -8,10 +8,11 @@ import { SnakesProvider } from '@features/snakes';
 
 import { Router } from './router';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
 import { THEME } from '@constants/colors';
 import { RootState } from './store';
+import { useCreateThemeMutation, useGetThemesQuery } from '@api/themes';
 
 const inputGlobalStyles = (background: string) => (
   <GlobalStyles
@@ -27,6 +28,9 @@ const inputGlobalStyles = (background: string) => (
 );
 
 export const App = hot(() => {
+  const dispatch = useDispatch();
+  const { data: allThemes } = useGetThemesQuery(); // Поиск всех тем приложения
+  const [createThemeMutation] = useCreateThemeMutation();
   const [theme, setTheme] = useState(createTheme(THEME['blue']));
   const themeSelector = useSelector((state: RootState) => state);
 
@@ -38,6 +42,19 @@ export const App = hot(() => {
       setTheme(theme);
     }
   }, [themeSelector]);
+
+  useEffect(() => {
+    (async () => {
+      // Если еще не занесены в БД темы, то создаем
+      if (Array.isArray(allThemes) && allThemes.length === 0) {
+        await createThemeMutation({ theme: ['blue', 'dark'] });
+      }
+      // Если занесены в БД темы
+      if (Array.isArray(allThemes) && allThemes.length !== 0) {
+        dispatch({ type: `theme/${allThemes[0].theme}` });
+      }
+    })();
+  }, [allThemes]);
 
   return (
     <>

@@ -3,10 +3,10 @@ export type TCreateThemeRequest = {
 };
 
 export type TCreateThemeResponse = {
-  theme: string;
+  theme: string[];
 };
 
 export type TGetThemesRequest = {
   id: number;
-  theme: string;
+  theme: 'dark' | 'blue';
 };

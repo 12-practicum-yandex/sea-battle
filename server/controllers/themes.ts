@@ -5,7 +5,11 @@ export const themeRouter = Router();
 
 const findTheme = async (req: Request, res: Response) => {
   try {
-    const themes = await SiteTheme.findAll();
+    const themes = await SiteTheme.findAll({
+      where: {
+        theme: ['blue', 'dark'],
+      },
+    });
 
     res.send({ themes });
   } catch (error) {
