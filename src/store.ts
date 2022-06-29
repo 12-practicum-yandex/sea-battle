@@ -1,5 +1,5 @@
 import { combineReducers, configureStore, createAction, createReducer } from '@reduxjs/toolkit';
-import { bffApi, instanceApiTheme } from '@api';
+import { bffApi, instanceApiForum, instanceApiTheme } from '@api';
 
 interface ThemeState {
   theme: string;
@@ -23,6 +23,7 @@ const themeReducer = createReducer(initialState, (builder) => {
 const rootReducer = combineReducers({
   [bffApi.reducerPath]: bffApi.reducer,
   [instanceApiTheme.reducerPath]: instanceApiTheme.reducer,
+  [instanceApiForum.reducerPath]: instanceApiForum.reducer,
   themeApp: themeReducer,
 });
 
