@@ -1,7 +1,6 @@
-import { AxiosError, AxiosRequestHeaders, AxiosResponseHeaders } from 'axios';
+import { AxiosRequestHeaders, AxiosResponseHeaders } from 'axios';
 import { Response, CookieOptions } from 'express';
 import setCookie, { Cookie, CookieMap } from 'set-cookie-parser';
-import { DatabaseError, ValidationError } from 'sequelize';
 
 const parseResponseCookies = (headers: AxiosResponseHeaders) =>
   setCookie(headers['set-cookie'] || [], {
