@@ -1,5 +1,5 @@
 import { combineReducers, configureStore, createAction, createReducer } from '@reduxjs/toolkit';
-import { instanceApi, instanceApiForum, instanceApiTheme } from '@api';
+import { bffApi, instanceApiTheme } from '@api';
 
 interface ThemeState {
   theme: string;
@@ -21,8 +21,7 @@ const themeReducer = createReducer(initialState, (builder) => {
 });
 
 const rootReducer = combineReducers({
-  [instanceApi.reducerPath]: instanceApi.reducer,
-  [instanceApiForum.reducerPath]: instanceApiForum.reducer,
+  [bffApi.reducerPath]: bffApi.reducer,
   [instanceApiTheme.reducerPath]: instanceApiTheme.reducer,
   themeApp: themeReducer,
 });
@@ -32,7 +31,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 export function create(preloadedState: any) {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(instanceApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(bffApi.middleware),
     preloadedState,
   });
 }
