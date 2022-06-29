@@ -12,7 +12,7 @@ const HeaderWrapper = styled('div')`
   border-bottom: 1px solid #1e4676;
 `;
 
-const Title = styled('h1')`
+const Title = styled('div')`
   padding: 20px;
   margin: 0;
   font-size: 36px;
@@ -89,11 +89,13 @@ export const Header = () => {
   const { data: userData } = useGetUserQuery();
   return (
     <HeaderWrapper>
-      <Title>Атлантида</Title>
+      <Title>
+        <Typography variant="h4">Атлантида</Typography>
+      </Title>
       <Navigation>
         {menu.map(({ label, link }) => (
           <MenuItem to={link} key={label}>
-            {label}
+            <Typography variant="body1">{label}</Typography>
           </MenuItem>
         ))}
       </Navigation>
