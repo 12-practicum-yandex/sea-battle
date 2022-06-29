@@ -7,6 +7,7 @@ import { useGetUserQuery } from '@api/auth';
 import { useCallback } from 'react';
 import { TProfileFormValues } from '@components/profile-form/types';
 import { useSnackbar } from 'notistack';
+import { CreateThemeDialog } from '@components/themes';
 
 const ContentWrapper = styled('div')`
   display: flex;
@@ -18,7 +19,9 @@ const ContentWrapper = styled('div')`
 const Card = styled(CardBase)`
   width: 400px;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 
@@ -77,6 +80,7 @@ export const ProfilePage = () => {
             </Avatar>
             <Input onChange={onChangeAvatar} id={'avatar'} type={'file'} />
           </Label>
+          <CreateThemeDialog />
         </Card>
         <ProfileForm onSubmit={onSubmit} initialValues={userData ?? null} isLoading={isLoading} />
       </ContentWrapper>
