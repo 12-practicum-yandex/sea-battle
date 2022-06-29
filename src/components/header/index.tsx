@@ -89,11 +89,13 @@ export const Header = () => {
   const { data: userData } = useGetUserQuery();
   return (
     <HeaderWrapper>
-      <Title>Атлантида</Title>
+      <Title>
+        <Typography variant="h4">Атлантида</Typography>
+      </Title>
       <Navigation>
         {menu.map(({ label, link }) => (
           <MenuItem to={link} key={label}>
-            {label}
+            <Typography variant="body1">{label}</Typography>
           </MenuItem>
         ))}
       </Navigation>

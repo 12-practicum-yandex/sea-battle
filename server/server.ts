@@ -5,7 +5,7 @@ import 'dotenv/config';
 import { clientConfig } from '../webpack';
 import { dbConnect } from './init';
 import { serverRenderMiddleware, webpackMiddleware, cspMiddleware } from './middlewares';
-import { topicsRouter } from './controllers';
+import { topicsRouter, themeRouter } from './controllers';
 
 const { PORT = 3000 } = process.env;
 
@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
 app.use('/api/topics', topicsRouter);
+app.use('/api/theme', themeRouter);
 
 app.get('/*', [...webpackMiddleware(clientConfig)], serverRenderMiddleware);
 
