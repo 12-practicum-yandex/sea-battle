@@ -9,7 +9,7 @@
     "lint-fix": "eslint src/ --fix",
     "start:webpack": "webpack --mode=development",
     "start:server": "wait-on -l file:dist/server.js && nodemon --watch dist/server.js dist/server.js",
-    "start": "cross-env NODE_ENV=development npm-run-all --print-label start:*",
+    "start": "webpack && npm run start:server",
     "serve": "concurrently \"webpack  --watch --config webpack/server.config.ts\" \"npm run start:server\"",
     "build": "webpack --mode production",
     "test": "jest"
