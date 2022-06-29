@@ -11,7 +11,8 @@
     "start:server": "wait-on -l file:dist/server.js && nodemon --watch dist/server.js dist/server.js",
     "start": "cross-env NODE_ENV=development npm-run-all --print-label start:*",
     "serve": "concurrently \"webpack  --watch --config webpack/server.config.ts\" \"npm run start:server\"",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
     "@babel/register": "^7.17.7",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.13",
+    "@types/jest": "^28.1.3",
     "@types/pg": "^8.6.5",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
@@ -57,6 +59,10 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^7.0.4",
+    "jest": "^28.1.2",
+    "jest-environment-jsdom": "^28.1.2",
+    "jsdom": "20.0.0",
+    "jsdom-global": "3.0.2",
     "lint-staged": "^12.3.7",
     "mini-css-extract-plugin": "^2.6.0",
     "nodemon": "^2.0.16",
@@ -81,6 +87,7 @@
     "@mui/material": "^5.5.3",
     "@mui/styled-engine-sc": "^5.5.2",
     "@reduxjs/toolkit": "^1.8.1",
+    "@testing-library/react": "^12.1.2",
     "axios": "^0.27.2",
     "connect-multiparty": "^2.2.0",
     "cookie-parser": "^1.4.6",
