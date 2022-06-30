@@ -17,7 +17,7 @@ export const SignIn = () => {
     redirect_uri: global?.location?.origin,
   });
   const oauthUri = useMemo(() => {
-    return `https://oauth.yandex.ru/authorize?response_type=code&client_id=${data?.service_id}`;
+    return `https://oauth.yandex.ru/authorize?response_type=code&client_id=abd306a16c164a0dbee28a00090a01de`;
   }, [data]);
 
   const onSubmit = async (values: TSignInFormValues) => {
